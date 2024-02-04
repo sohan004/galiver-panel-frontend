@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import logo from '../../assets/logo/png-04.png'
+import logo from '../../assets/logo/png-02.png'
 import { MdCategory, MdDashboard } from 'react-icons/md'
-import { FaAlignLeft, FaUser } from "react-icons/fa";
-import { IoAddCircleSharp, IoCartSharp } from 'react-icons/io5'
+import { FaAlignLeft, FaUser, FaUserCircle } from "react-icons/fa";
+import { IoAddCircleSharp, IoCartSharp, IoNotificationsSharp } from 'react-icons/io5'
 import { RiShoppingBag2Fill } from 'react-icons/ri'
 import { BiSolidShoppingBags } from 'react-icons/bi'
 import { PiSubtractSquareFill, PiSubtractFill } from 'react-icons/pi'
@@ -58,6 +58,21 @@ const DashboardLayout = () => {
             icon: BiSolidShoppingBags,
             path: '/shops'
         },
+        {
+            name: 'Sub Sub Categories',
+            icon: PiSubtractFill,
+            path: '/sub-sub-categories'
+        },
+        {
+            name: 'Users',
+            icon: FaUser,
+            path: '/users'
+        },
+        {
+            name: 'Shops',
+            icon: BiSolidShoppingBags,
+            path: '/shops'
+        },
     ]
 
     return (
@@ -66,21 +81,27 @@ const DashboardLayout = () => {
 
                 <div onClick={() => setShowLeftSideBar(prev => !prev)} className={`fixed top-0 block md:hidden left-0 w-full h-full bg-black opacity-50 z-[50] backdrop-blur-md ${showLeftSideBar ? 'hidden' : 'block'}`}></div>
 
-                <div className={`h-screen bg-gray-50 fixed md:sticky top-0 duration-500 w-[250px]  overflow-hidden  z-50 md:z-10 ${showLeftSideBar ? 'md:ml-0 -ml-[250px]' : 'ml-[0] md:-ml-[250px]'} border-e p-5 md:p-4`}>
-                    <div className="flex items-center justify-around">
-                        <img src={logo} className="w-32 md:w-40 " alt="" />
+                <div className={`h-screen bg-[#1C2434] fixed md:sticky top-0 duration-500 w-[280px] overflow-y-auto  overflow-hidden  z-50 md:z-10 ${showLeftSideBar ? 'md:ml-0 -ml-[280px]' : 'ml-[0] md:-ml-[280px]'}  p-5 md:p-4`}>
+                    <div className="">
+                       <p className="flex items-center text-2xl font-semibold text-white"> <img src={logo} className="w-16 " alt="" /> Galiver</p>
                     </div>
-                    <div className="mt-7  grid grid-cols-1 gap-4">
-                        {menuData.map((item, index) => <NavLink to={item.path} key={index} className={({ isActive }) => `flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base md:text-lg ${isActive ? 'bg-gray-200' : ''}`}><item.icon /> {item.name}</NavLink>)}
+                    <div className="mt-4 md:mt-5  grid grid-cols-1 gap-5">
+                        {menuData.map((item, index) => <NavLink to={item.path} key={index} className={({ isActive }) => `flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-gray-200 ${isActive ? 'bg-slate-600' : ''}`}><item.icon className="text-2xl" /> {item.name}</NavLink>)}
                     </div>
                 </div>
 
                 {/* main page */}
-                <div className="flex-1 ">
-                    <div className=" bg-gray-50 border-b p-4">
+                <div className="flex-1 flex flex-col h-screen">
+                    <div className=" bg-white border-b p-4 flex items-center justify-between shadow relative">
                         <FaAlignLeft onClick={() => setShowLeftSideBar(!showLeftSideBar)} className=" text-xl cursor-pointer" />
+                        <div className="flex items-center gap-4 ">
+                            <FaUserCircle className="text-2xl text-gray-800" />
+                            <IoNotificationsSharp className="text-2xl text-gray-800 " />
+                        </div>
                     </div>
-                    <Outlet></Outlet>
+                   <div className="p-5 md:p-7 flex-grow overflow-y-auto bg-[#F1F5F9]">
+                   <Outlet></Outlet>
+                   </div>
                 </div>
 
             </div>
