@@ -48,31 +48,6 @@ const DashboardLayout = () => {
             icon: PiSubtractFill,
             path: '/sub-sub-categories'
         },
-        {
-            name: 'Users',
-            icon: FaUser,
-            path: '/users'
-        },
-        {
-            name: 'Shops',
-            icon: BiSolidShoppingBags,
-            path: '/shops'
-        },
-        {
-            name: 'Sub Sub Categories',
-            icon: PiSubtractFill,
-            path: '/sub-sub-categories'
-        },
-        {
-            name: 'Users',
-            icon: FaUser,
-            path: '/users'
-        },
-        {
-            name: 'Shops',
-            icon: BiSolidShoppingBags,
-            path: '/shops'
-        },
     ]
 
     return (
