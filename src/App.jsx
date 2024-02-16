@@ -10,6 +10,7 @@ import Modal from "./components/Modal/Modal";
 import { toggleGlobalLoading } from "./components/Modal/components/GlobalLoading/GlobalLoading";
 import LoginGuard from "./authGuard/LoginGuard/LoginGuard";
 import Users from "./pages/Users/Users";
+import Categories from "./pages/Categories/Categories";
 
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.vercel.app/'
 
@@ -28,6 +29,10 @@ const App = () => {
         {
           path: "/users",
           element: <Users></Users>
+        },
+        {
+          path: "/categories",  
+          element: <Categories></Categories>
         },
       ]
     },

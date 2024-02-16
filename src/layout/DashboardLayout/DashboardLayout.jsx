@@ -9,6 +9,7 @@ import { BiSolidShoppingBags } from 'react-icons/bi'
 import { PiSubtractSquareFill, PiSubtractFill } from 'react-icons/pi'
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/auth/authSlice";
+import { FaShop } from "react-icons/fa6";
 
 
 const DashboardLayout = () => {
@@ -38,8 +39,13 @@ const DashboardLayout = () => {
         },
         {
             name: 'Users',
-            icon: FaUser ,
+            icon: FaUser,
             path: '/users'
+        },
+        {
+            name: 'Shop',
+            icon: FaShop,
+            path: '/Shop'
         },
         {
             name: 'Categories',
@@ -81,16 +87,20 @@ const DashboardLayout = () => {
                 </div>
 
                 {/* main page */}
-                <div className="flex-1 flex flex-col h-screen">
-                    <div className=" bg-white border-b p-4 flex items-center justify-between shadow relative">
-                        <FaAlignLeft onClick={() => setShowLeftSideBar(!showLeftSideBar)} className=" text-xl cursor-pointer" />
-                        <div className="flex items-center gap-4 ">
-                            <FaUserCircle className="text-2xl text-gray-800" />
-                            <IoNotificationsSharp className="text-2xl text-gray-800 " />
+                <div className="flex-1 relative">
+                    <div className="flex flex-col h-screen absolute top-0 left-0 w-full ">
+                        <div className=" bg-white border-b p-4 flex items-center justify-between shadow relative">
+                            <FaAlignLeft onClick={() => setShowLeftSideBar(!showLeftSideBar)} className=" text-xl cursor-pointer" />
+                            <div className="flex items-center gap-4 ">
+                                <FaUserCircle className="text-2xl text-gray-800" />
+                                <IoNotificationsSharp className="text-2xl text-gray-800 " />
+                            </div>
                         </div>
-                    </div>
-                    <div className="p-5 md:p-7 flex-grow overflow-y-auto bg-[#F1F5F9]">
-                        <Outlet></Outlet>
+                        <div className="p-5 md:p-7 flex-1 overflow-y-auto bg-[#F1F5F9] ">
+                            <div>
+                                <Outlet></Outlet>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

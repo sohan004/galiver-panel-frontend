@@ -1,15 +1,14 @@
 import { useRef, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import useGetAllUsers from "../../Hooks/useGetAllUsers";
 import moment from "moment";
 import BottomLoading from "../../components/BottomLoading/BottomLoading";
 
 const Users = () => {
-    const [skip, setSkip] = useState(0)
     const [search, setSearch] = useState('')
     const searchInputRef = useRef()
 
-    const [users, setUsers, loading, totalUsers, setTotalUsers] = useGetAllUsers(skip, search)
+    const [users, setUsers, loading, totalUsers, setTotalUsers, loadMore] = useGetAllUsers(search)
 
     const handleSearch = () => {
         setSearch(searchInputRef.current.value)
@@ -18,20 +17,23 @@ const Users = () => {
 
     return (
         <div>
-            <div className="flex justify-end">
+            <div className="flex justify-between items-end">
+                <div>
+                    <p className="flex items-center text-gray-700 gap-1"><FaUser className="text-xl" /> Total Users: {totalUsers}</p>
+                </div>
                 <div className="relative">
                     <input
                         ref={searchInputRef}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         type="text"
-                        className="outline-none p-2 bg-white rounded-md border-b-2"
+                        className="outline-none p-2 bg-white rounded-md border-b-2 w-[180px] md:w-[250px]"
                         placeholder="Search User" />
                     <FaSearch onClick={handleSearch} className="absolute top-2/4 -translate-y-2/4 right-3 cursor-pointer text-gray-500" />
                 </div>
             </div>
-            <div className="bg-white overflow-x-auto mt-3 shadow-md rounded-md">
-                <div className="relative overflow-x-auto">
-                    <table className="w-full text-sm text-left overflow-x-auto text-gray-500 ">
+            <div className=" mt-3  w-full">
+                <div className="overflow-x-auto">
+                    <table className=" text-sm text-left  text-gray-500  w-full  bg-white shadow-md">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
@@ -91,8 +93,13 @@ const Users = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+                {totalUsers > users.length && <div className="flex justify-center mt-4">
+                    <button
+                        onClick={loadMore}
+                        className="py-1 px-3 rounded bg-orange-600 text-white hover:bg-orange-700">Load More</button>
+                </div>}
                 <BottomLoading loading={loading} />
+            </div>
         </div>
     );
 };

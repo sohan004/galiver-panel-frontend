@@ -1,25 +1,45 @@
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../App";
 
-const useGetAllUsers = (skip = 0, search) => {
+const useGetAllUsers = (search) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [totalUsers, setTotalUsers] = useState(0);
-    let searchQuery = `skip=${skip}`;
+    let searchQuery = ''
     if (search) {
         searchQuery += `&search=${search}`;
     }
 
-    useEffect(() => {
+    const loadData = (skip) => {
+        return new Promise((resolve, reject) => {
+            resolve(fetch(`${BACKEND_URL}/api/v1/user/get-all-user?skip=${skip}${searchQuery}`, {
+                headers: {
+                    'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
+                },
+            }))
+        });
+    }
+
+    const loadMore = () => {
         setLoading(true);
-        fetch(`${BACKEND_URL}/api/v1/user/get-all-user?${searchQuery}`, {
-            headers: {
-                'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
-            },
-        })
+        loadData(users.length)
             .then((response) => response.json())
             .then((data) => {
-                if(data.success) {
+                if (data.success) {
+                    setUsers([...users, ...data.users]);
+                }
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        loadData(0)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
                     setUsers(data.users);
                     setTotalUsers(data.totalUsers);
                 }
@@ -27,9 +47,9 @@ const useGetAllUsers = (skip = 0, search) => {
             .finally(() => {
                 setLoading(false);
             });
-    }, [skip, search]);
+    }, [search]);
 
-    return [users, setUsers, loading, totalUsers, setTotalUsers];
+    return [users, setUsers, loading, totalUsers, setTotalUsers, loadMore];
 }
 
 export default useGetAllUsers;
