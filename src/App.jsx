@@ -11,8 +11,9 @@ import { toggleGlobalLoading } from "./components/Modal/components/GlobalLoading
 import LoginGuard from "./authGuard/LoginGuard/LoginGuard";
 import Users from "./pages/Users/Users";
 import Categories from "./pages/Categories/Categories";
+import SubCategories from "./pages/SubCategories/SubCategories";
 
-export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.vercel.app/'
+export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
 
 const App = () => {
   const { user, loading } = useSelector(state => state.auth)
@@ -33,6 +34,10 @@ const App = () => {
         {
           path: "/categories",  
           element: <Categories></Categories>
+        },
+        {
+          path: "/sub-categories",  
+          element: <SubCategories></SubCategories>
         },
       ]
     },
