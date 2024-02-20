@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../App";
+import { toggleGlobalLoading } from "../components/Modal/components/GlobalLoading/GlobalLoading";
 
 const useGetCategories = () => {
     const [categories, setCategories] = useState([]);
@@ -7,6 +8,7 @@ const useGetCategories = () => {
 
     useEffect(() => {
         setLoading(true)
+        toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/category/get-category-admin`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
@@ -18,6 +20,7 @@ const useGetCategories = () => {
             })
             .finally(() => {
                 setLoading(false)
+                toggleGlobalLoading('close')
             })
     }, []);
 

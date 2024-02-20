@@ -2,17 +2,16 @@
 import { useState } from "react";
 import { LuImagePlus } from "react-icons/lu";
 import { BACKEND_URL } from "../../../App";
-import { json } from "react-router-dom";
 import { toggleGlobalLoading } from "../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import Select from "react-select";
-import useGetCategories from "../../../Hooks/useGetCategories";
+import useGetSubCategories from "../../../Hooks/useGetSubCategories";
 
-const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
+const AddNewSubSubCategories = ({ subSubCategories, setSubSubCategories, setState }) => {
     const [selectedMedia, setSelectedMedia] = useState(null)
     const [name, setName] = useState('')
     const [warning, setWarning] = useState([])
-    const [categories] = useGetCategories()
-    const [selectedCategory, setSelectedCategory] = useState(null)
+    const [subCategories] = useGetSubCategories()
+    const [selectedSubCategory, setSelectedSubCategory] = useState(null)
 
     const warningDetect = (name) => {
         if (warning.includes(name)) {
@@ -25,7 +24,7 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
 
 
     const options = () => {
-        return categories.map(category => {
+        return subCategories.map(category => {
             return {
                 value: category._id,
                 label: category.name
@@ -38,17 +37,17 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
         if (!selectedMedia) {
             setWarning(prev => [...prev, 'img'])
         }
-        if (!name || !selectedCategory) {
+        if (!name || !selectedSubCategory) {
             setWarning(prev => [...prev, 'name'])
         }
         if (!selectedMedia || !name) return
         const formData = new FormData()
 
-        formData.append('data', JSON.stringify({ name , categoryId: selectedCategory.value}))
+        formData.append('data', JSON.stringify({ name , subCategoryId: selectedSubCategory.value}))
         formData.append('image', selectedMedia)
         toggleGlobalLoading('open')
 
-        fetch(`${BACKEND_URL}/api/v1/sub-category`, {
+        fetch(`${BACKEND_URL}/api/v1/sub-sub-category`, {
             method: 'POST',
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
@@ -58,7 +57,7 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setSubCategories([data.subCategory, ...subCategories])
+                setSubSubCategories([data.subSubCategory, ...subSubCategories])
             })
             .finally(() => {
                 toggleGlobalLoading('close')
@@ -67,12 +66,11 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
     }
 
 
-    const inputStyle = (baseStyles, state, name) => {
+    const inputStyle = (baseStyles) => {
         return {
             ...baseStyles,
             boxShadow: "none",
             border: "2px dashed #475569",
-            // borderBottom: state.isFocused ? "2px solid #f97316" : "2px solid #e5e7eb",
             borderRadius: 5,
             backgroundColor: "#F1F5F9",
         }
@@ -84,10 +82,10 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
                 <Select
                     className="basic-single flex-1 border-0 relative"
                     classNamePrefix="select"
-                    placeholder="Category"
+                    placeholder="Sub Category"
                     styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                    onChange={(e) => setSelectedCategory(e)}
-                    value={selectedCategory}
+                    onChange={(e) => setSelectedSubCategory(e)}
+                    value={selectedSubCategory}
                     name="color"
                     options={options()}
                 />
@@ -95,11 +93,11 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
                 <input
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    placeholder="Sub Category Name"
+                    placeholder="Sub Sub Category Name"
                     type="text"
                     className={`w-full bg-slate-100 outline-none p-3 border-dashed focus:border-solid border-2 border-gray-500 rounded-md mt-5 ${warningDetect('name')}`} />
 
-                <label htmlFor="sub-category-image" className={`mt-5 w-full bg-slate-100  border-dashed  border-2  border-gray-500 rounded-md flex items-center justify-center min-h-36 max-h-48 cursor-pointer overflow-hidden ${warningDetect('img')}`}>
+                <label htmlFor="sub-sub-category-image" className={`mt-5 w-full bg-slate-100  border-dashed  border-2  border-gray-500 rounded-md flex items-center justify-center min-h-36 max-h-48 cursor-pointer overflow-hidden ${warningDetect('img')}`}>
                     {!selectedMedia && <div className="flex flex-col items-center opacity-60">
                         <LuImagePlus className="text-4xl " />
                         <p>Add Image</p>
@@ -124,10 +122,10 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
                     }
                 }}
                 type="file"
-                id="sub-category-image"
+                id="sub-sub-category-image"
                 className="h-0 w-0 overflow-hidden" />
         </div>
     );
 };
 
-export default AddNewSubCategories;
+export default AddNewSubSubCategories;

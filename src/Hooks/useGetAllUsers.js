@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../App";
+import { toggleGlobalLoading } from "../components/Modal/components/GlobalLoading/GlobalLoading";
 
 const useGetAllUsers = (search) => {
     const [users, setUsers] = useState([]);
@@ -23,6 +24,7 @@ const useGetAllUsers = (search) => {
 
     const loadMore = () => {
         setLoading(true);
+        toggleGlobalLoading('open')
         loadData(users.length)
             .then((response) => response.json())
             .then((data) => {
@@ -32,11 +34,13 @@ const useGetAllUsers = (search) => {
             })
             .finally(() => {
                 setLoading(false);
+                toggleGlobalLoading('close')
             });
     };
 
     useEffect(() => {
         setLoading(true);
+        toggleGlobalLoading('open')
         loadData(0)
             .then((response) => response.json())
             .then((data) => {
@@ -47,6 +51,7 @@ const useGetAllUsers = (search) => {
             })
             .finally(() => {
                 setLoading(false);
+                toggleGlobalLoading('close')
             });
     }, [search]);
 

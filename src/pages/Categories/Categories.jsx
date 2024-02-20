@@ -40,7 +40,7 @@ const Categories = () => {
                 <p className="flex items-center text-gray-700 gap-2"> Total Categories: {categories.length}</p>
                 <button
                     onClick={() => setAddNew(true)}
-                    className="bg-slate-700 text-white py-1 px-3 rounded active:scale-95 duration-75">Add New Categories</button>
+                    className="bg-slate-700 text-white py-1 px-3 rounded active:scale-95 duration-75">Add</button>
             </div>
             <div className=" mt-3  w-full">
                 <div className="overflow-x-auto">
@@ -83,7 +83,7 @@ const Categories = () => {
                         </tbody>
                     </table>
                 </div>
-                <BottomLoading loading={loading} />
+                {/* <BottomLoading loading={loading} /> */}
                 {addNew && <AddNewCategories setCategories={setCategories} categories={categories} setState={setAddNew} />}
             </div>
         </div>

@@ -98,7 +98,7 @@ const Users = () => {
                         onClick={loadMore}
                         className="py-1 px-3 rounded bg-orange-600 text-white hover:bg-orange-700">Load More</button>
                 </div>}
-                <BottomLoading loading={loading} />
+                {/* <BottomLoading loading={loading} /> */}
             </div>
         </div>
     );

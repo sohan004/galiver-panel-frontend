@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { BACKEND_URL } from "../App"
 import { toggleGlobalLoading } from "../components/Modal/components/GlobalLoading/GlobalLoading"
 
-const useGetSubCategories = (text) => {
-    const [subCategories, setSubCategories] = useState([])
+const useGetSubSubCategories = (text) => {
+    const [subSubCategories, setSubSubCategories] = useState([])
     const [loading, setLoading] = useState(true)
-    const [totalSubCategories, setTotalSubCategories] = useState(0)
+    const [totalSubSubCategories, setTotalSubSubCategories] = useState(0)
 
     const loadData = () => {
         setLoading(true)
@@ -17,7 +17,7 @@ const useGetSubCategories = (text) => {
         })
             .then(res => res.json())
             .then(data => {
-                setSubCategories([...subCategories, ...data.subCategories])
+                setSubSubCategories([...subSubCategories, ...data.subSubCategories])
             })
             .finally(() => {
                 setLoading(false)
@@ -28,15 +28,15 @@ const useGetSubCategories = (text) => {
     useEffect(() => {
         setLoading(true)
         toggleGlobalLoading('open')
-        fetch(`${BACKEND_URL}/api/v1/sub-category?name=${text || ''}`, {
+        fetch(`${BACKEND_URL}/api/v1/sub-sub-category?name=${text || ''}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
             }
         })
             .then(res => res.json())
             .then(data => {
-                setSubCategories(data.subCategories)
-                setTotalSubCategories(data.totalSubCategories)
+                setSubSubCategories(data.subSubCategories)
+                setTotalSubSubCategories(data.totalSubSubCategories)
             })
             .finally(() => {
                 setLoading(false)
@@ -44,7 +44,7 @@ const useGetSubCategories = (text) => {
             })
     }, [text])
 
-    return [subCategories, setSubCategories, totalSubCategories,setTotalSubCategories, loadData, loading]
+    return [subSubCategories, setSubSubCategories, totalSubSubCategories, setTotalSubSubCategories,loadData, loading]
 }
 
-export default useGetSubCategories
+export default useGetSubSubCategories

@@ -12,6 +12,7 @@ import LoginGuard from "./authGuard/LoginGuard/LoginGuard";
 import Users from "./pages/Users/Users";
 import Categories from "./pages/Categories/Categories";
 import SubCategories from "./pages/SubCategories/SubCategories";
+import SubSubCategories from "./pages/SubSubCategories/SubSubCategories";
 
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
 
@@ -38,6 +39,10 @@ const App = () => {
         {
           path: "/sub-categories",  
           element: <SubCategories></SubCategories>
+        },
+        {
+          path: "/sub-sub-categories",  
+          element: <SubSubCategories></SubSubCategories>
         },
       ]
     },
