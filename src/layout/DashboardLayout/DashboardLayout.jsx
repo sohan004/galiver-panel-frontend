@@ -42,11 +42,11 @@ const DashboardLayout = () => {
             icon: FaUser,
             path: '/users'
         },
-        {
-            name: 'Shop',
-            icon: FaShop,
-            path: '/Shop'
-        },
+        // {
+        //     name: 'Shop',
+        //     icon: FaShop,
+        //     path: '/Shop'
+        // },
         {
             name: 'Categories',
             icon: MdCategory,
@@ -71,7 +71,7 @@ const DashboardLayout = () => {
 
     const clickSideBar = () => {
         const width = window.innerWidth
-        if(width < 768) setShowLeftSideBar(true)
+        if (width < 768) setShowLeftSideBar(true)
     }
 
     return (
@@ -86,8 +86,8 @@ const DashboardLayout = () => {
                     </div>
                     <div className="mt-4 md:mt-5  grid grid-cols-1 gap-5">
                         {menuData.map((item, index) => <NavLink
-                        onClick={clickSideBar}
-                        to={item.path} key={index} className={({ isActive }) => `flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-gray-200 ${isActive ? 'bg-slate-600' : ''}`}><item.icon className="text-2xl" /> {item.name}</NavLink>)}
+                            onClick={clickSideBar}
+                            to={item.path} key={index} className={({ isActive }) => `flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-gray-200 ${isActive ? 'bg-slate-600' : ''}`}><item.icon className="text-2xl" /> {item.name}</NavLink>)}
                         <p onClick={signOut} className="flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-orange-500"> <FaSignOutAlt /> Sign Out</p>
 
                     </div>

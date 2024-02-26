@@ -6,6 +6,7 @@ import { BACKEND_URL } from '../../App';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/auth/authSlice';
 import { toggleGlobalLoading } from '../../components/Modal/components/GlobalLoading/GlobalLoading';
+import toast from 'react-hot-toast';
 const Login = () => {
     const [showPass, setShowPass] = useState(false)
     const [error, setError] = useState('')
@@ -16,11 +17,11 @@ const Login = () => {
         const email = e.target.email.value
         const password = e.target.password.value
         if (!email) {
-            setError('Email is required')
+            toast.error('Email is required')
             return
         }
         if (!password) {
-            setError('Password is required')
+            toast.error('Password is required')
             return
         }
         setError('')
@@ -35,7 +36,7 @@ const Login = () => {
             .then(res => res.json())
             .then(data => {
                 toggleGlobalLoading('close')
-                if (data.message) return setError(data.message)
+                if (data.message) return toast.error(data.message)
                 else {
                     localStorage.setItem('admin-token', data.token)
                     dispatch(setUser(data.info))

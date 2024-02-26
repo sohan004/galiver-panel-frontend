@@ -10,7 +10,7 @@ const useGetSubSubCategories = (text) => {
     const loadData = () => {
         setLoading(true)
         toggleGlobalLoading('open')
-        fetch(`${BACKEND_URL}/api/v1/sub-category?name=${text || ''}`, {
+        fetch(`${BACKEND_URL}/api/v1/sub-sub-category?name=${text || ''}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
             }

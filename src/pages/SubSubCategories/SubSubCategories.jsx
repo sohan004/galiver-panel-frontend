@@ -9,7 +9,7 @@ import { BACKEND_URL } from "../../App";
 const SubSubCategories = () => {
     const [search, setSearch] = useState('')
     const [addNew, setAddNew] = useState(false)
-    const [subSubCategories, setSubSubCategories, totalSubSubCategories, setTotalSubSubCategories, loadData, loading] = useGetSubSubCategories(search)
+    const [subSubCategories, setSubSubCategories, totalSubSubCategories, setTotalSubSubCategories, loadData] = useGetSubSubCategories(search)
     const searchInputRef = useRef()
 
     

@@ -2,23 +2,29 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "./layout/DashboardLayout/DashboardLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Login/Login";
-import { useDispatch, useSelector } from "react-redux";
 import AdminAuthGuard from "./authGuard/AdminAuthGuard/AdminAuthGuard";
-import { useEffect } from "react";
-import { setLoading, setUser } from "./features/auth/authSlice";
 import Modal from "./components/Modal/Modal";
-import { toggleGlobalLoading } from "./components/Modal/components/GlobalLoading/GlobalLoading";
 import LoginGuard from "./authGuard/LoginGuard/LoginGuard";
 import Users from "./pages/Users/Users";
 import Categories from "./pages/Categories/Categories";
 import SubCategories from "./pages/SubCategories/SubCategories";
 import SubSubCategories from "./pages/SubSubCategories/SubSubCategories";
+import useSocketConnect from "./Hooks/useSockeConnect";
+import useAutoLogin from "./Hooks/useAutoLogin";
+import AddProduct from "./pages/AddProduct/AddProduct";
+import { Toaster } from "react-hot-toast";
 
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
 
+
 const App = () => {
-  const { user, loading } = useSelector(state => state.auth)
-  const dispatch = useDispatch()
+
+  //socket connection
+  useSocketConnect()
+
+  //auto login
+  useAutoLogin()
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -33,16 +39,20 @@ const App = () => {
           element: <Users></Users>
         },
         {
-          path: "/categories",  
+          path: "/categories",
           element: <Categories></Categories>
         },
         {
-          path: "/sub-categories",  
+          path: "/sub-categories",
           element: <SubCategories></SubCategories>
         },
         {
-          path: "/sub-sub-categories",  
+          path: "/sub-sub-categories",
           element: <SubSubCategories></SubSubCategories>
+        },
+        {
+          path: "/add-product",
+          element: <AddProduct></AddProduct>
         },
       ]
     },
@@ -52,35 +62,15 @@ const App = () => {
     }
   ])
 
-  useEffect(() => {
-    const token = localStorage.getItem('admin-token')
-    if (!token || user) dispatch(setLoading(false))
-    if (token) {
-      toggleGlobalLoading('open')
-      dispatch(setLoading(true))
-      fetch(`${BACKEND_URL}/api/v1/auth/admin-auto-login`, {
-        headers: {
-          'authorization': `Bearer ${token}`
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data?.success && data?.info?.role === 'admin') {
-            dispatch(setUser(data.info))
-          }
-        })
-        .finally(() => {
-          toggleGlobalLoading('close')
-          dispatch(setLoading(false))
-        })
-    }
-  }, [])
-
-
   return (
     <div className="bg-white text-black">
       <RouterProvider router={router} ></RouterProvider>
       <Modal />
+
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </div>
   );
 };
