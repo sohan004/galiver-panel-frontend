@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../../../App";
 import { toggleGlobalLoading } from "../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import Select from "react-select";
 import useGetSubCategories from "../../../Hooks/useGetSubCategories";
+import toast from "react-hot-toast";
 
 const AddNewSubSubCategories = ({ subSubCategories, setSubSubCategories, setState }) => {
     const [selectedMedia, setSelectedMedia] = useState(null)
@@ -58,6 +59,7 @@ const AddNewSubSubCategories = ({ subSubCategories, setSubSubCategories, setStat
             .then(data => {
                 console.log(data)
                 setSubSubCategories([data.subSubCategory, ...subSubCategories])
+                toast.success('Sub Sub Category added successfully')
             })
             .finally(() => {
                 toggleGlobalLoading('close')

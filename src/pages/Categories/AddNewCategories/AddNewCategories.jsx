@@ -3,6 +3,7 @@ import { LuImagePlus } from "react-icons/lu";
 import { BACKEND_URL } from "../../../App";
 import { json } from "react-router-dom";
 import { toggleGlobalLoading } from "../../../components/Modal/components/GlobalLoading/GlobalLoading";
+import toast from "react-hot-toast";
 
 const AddNewCategories = ({ setState, setCategories, categories }) => {
     const [selectedMedia, setSelectedMedia] = useState(null)
@@ -43,6 +44,7 @@ const AddNewCategories = ({ setState, setCategories, categories }) => {
             .then(response => response.json())
             .then(data => {
                 setCategories(prev => [data.category, ...categories])
+                toast.success('Category added successfully')
             })
             .finally(() => {
                 toggleGlobalLoading('close')

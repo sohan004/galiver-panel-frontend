@@ -10,6 +10,7 @@ import { PiSubtractSquareFill, PiSubtractFill } from 'react-icons/pi'
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/auth/authSlice";
 import { FaShop } from "react-icons/fa6";
+import Nav from "../../components/Nav/Nav";
 
 
 const DashboardLayout = () => {
@@ -64,10 +65,7 @@ const DashboardLayout = () => {
         },
     ]
 
-    const signOut = () => {
-        localStorage.removeItem('admin-token')
-        dispatch(setUser(null))
-    }
+  
 
     const clickSideBar = () => {
         const width = window.innerWidth
@@ -88,21 +86,13 @@ const DashboardLayout = () => {
                         {menuData.map((item, index) => <NavLink
                             onClick={clickSideBar}
                             to={item.path} key={index} className={({ isActive }) => `flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-gray-200 ${isActive ? 'bg-slate-600' : ''}`}><item.icon className="text-2xl" /> {item.name}</NavLink>)}
-                        <p onClick={signOut} className="flex items-center  p-3 rounded-md cursor-pointer gap-3 text-base font-medium md:text-lg text-orange-500"> <FaSignOutAlt /> Sign Out</p>
-
                     </div>
                 </div>
 
                 {/* main page */}
                 <div className="flex-1 relative">
                     <div className="flex flex-col h-screen absolute top-0 left-0 w-full ">
-                        <div className=" bg-white border-b p-4 flex items-center justify-between shadow relative">
-                            <FaAlignLeft onClick={() => setShowLeftSideBar(!showLeftSideBar)} className=" text-xl cursor-pointer" />
-                            <div className="flex items-center gap-4 ">
-                                <FaUserCircle className="text-2xl text-gray-800" />
-                                <IoNotificationsSharp className="text-2xl text-gray-800 " />
-                            </div>
-                        </div>
+                        <Nav setShowLeftSideBar={setShowLeftSideBar} showLeftSideBar={showLeftSideBar} />
                         <div className="p-2 md:p-7 flex-1 overflow-y-auto bg-[#F1F5F9] ">
                             <div>
                                 <Outlet></Outlet>

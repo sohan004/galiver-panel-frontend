@@ -6,6 +6,7 @@ import AddNewSubCategories from './AddNewSubCategories/AddNewSubCategories';
 import { toggleGlobalLoading } from '../../components/Modal/components/GlobalLoading/GlobalLoading';
 import { BACKEND_URL } from '../../App';
 import { FaSearch } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 const SubCategories = () => {
     const [search, setSearch] = useState('')
@@ -28,6 +29,7 @@ const SubCategories = () => {
                 if (data.success) {
                     setSubCategories(subCategories.filter(category => category._id !== id))
                     setTotalSubCategories(totalSubCategories-1)
+                    toast.success('Sub Category deleted successfully')
                 }
             })
             .finally(() => {

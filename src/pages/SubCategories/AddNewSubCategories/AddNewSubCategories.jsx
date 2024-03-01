@@ -6,6 +6,7 @@ import { json } from "react-router-dom";
 import { toggleGlobalLoading } from "../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import Select from "react-select";
 import useGetCategories from "../../../Hooks/useGetCategories";
+import toast from "react-hot-toast";
 
 const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
     const [selectedMedia, setSelectedMedia] = useState(null)
@@ -59,6 +60,7 @@ const AddNewSubCategories = ({ setSubCategories, subCategories, setState }) => {
             .then(data => {
                 console.log(data)
                 setSubCategories([data.subCategory, ...subCategories])
+                toast.success('Sub Category added successfully')
             })
             .finally(() => {
                 toggleGlobalLoading('close')

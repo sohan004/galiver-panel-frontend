@@ -5,7 +5,7 @@ import { IoIosClose } from "react-icons/io";
 import Select from "react-select";
 import AddColor from "./components/AddColor/AddColor";
 import AddSize from "./components/AddSize/AddSize";
-import { additionalAttributes, deliveryTime } from "./constant/constant";
+import { additionalAttributes, deliveryTime, requiredProductFelids } from "./constant/constant";
 import useGetCategories from "../../Hooks/useGetCategories";
 import { BACKEND_URL } from "../../App";
 import { toggleGlobalLoading } from "../../components/Modal/components/GlobalLoading/GlobalLoading";
@@ -29,8 +29,8 @@ const AddProduct = () => {
         let fileArray = []
         await Promise.all(Object.keys(file).map((key) => {
             const singleFile = file[key]
-            if (singleFile.size > 40000) {
-                return toast.error('Image size must be less then 40kb')
+            if (singleFile.size > 500000) {
+                return toast.error('Image size must be less then 500kb')
             }
             if (singleFile.type.includes('image')) {
                 fileArray.push(singleFile)
@@ -142,228 +142,283 @@ const AddProduct = () => {
     }, [inputData?.subCategory])
 
     console.log(inputData)
+    const onSubmit = () => {
+        let error = false
+        requiredProductFelids.forEach((field) => {
+            if (error) return
+            const value = inputData[field]
+            const validArray = Array.isArray(value)
+            if (!value) {
+                error = true
+                return toast.error(`${field} is required`)
+            }
+            if (validArray && value.length < 1) {
+                error = true
+                return toast.error(`${field} is required`)
+            }
+        })
+
+        if (error) return
+
+        const formData = new FormData()
+        inputData.media.forEach((img) => {
+            formData.append('media', img)
+        })
+        const data = { ...inputData }
+        delete data.media
+        formData.append('data', JSON.stringify(data))
+        toggleGlobalLoading('open')
+        fetch(`${BACKEND_URL}/api/v1/product`, {
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`
+            },
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    toast.success('Product added successfully')
+                    setInputData({})
+                }
+                else {
+                    toast.error(data.message)
+                }
+            })
+            .finally(() => {
+                toggleGlobalLoading('close')
+            })
+
+    }
 
     return (
-        <div className="flex flex-col lg:flex-row w-full gap-5 lg:gap-3">
-            <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-4 md:gap-6">
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">
-                        <FaInfoCircle className="inline me-1 -mt-1" />
-                        Add product image. Must be add clear,  white background image . image size must be less then 40kb*</p>
-                    <div className="flex gap-6 lg:gap-10 mt-3 flex-wrap">
-                        {getValue('media', 'array')?.map((img, index) => <div className="h-[90px] w-[90px] lg:h-[130px] lg:w-[130px] relative " key={index}>
-                            <p onClick={() => removeArrayValue('media', index)} className="absolute top-0 right-0 rounded-full cursor-pointer bg-slate-600 text-white"><IoIosClose /></p>
-                            <img key={index} src={URL.createObjectURL(img)} alt="" className=" rounded-md  w-full h-full" />
-                        </div>)}
-                        {getValue('media', 'array')?.length < 5 && <div className="h-[80px] w-[80px] lg:h-[130px] lg:w-[130px] bg-slate-200 relative cursor-pointer">
-                            <FaRegImage className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-3xl lg:text-5xl text-gray-500" />
-                            <p className="absolute top-full right-1 text-xs text-gray-500">{getValue('media', 'array').length}/5</p>
-                            <label htmlFor="product-image" className="absolute top-0 left-0 w-full h-full cursor-pointer"></label>
-                        </div>}
+        <div>
+            <div className="flex flex-col lg:flex-row w-full gap-5 lg:gap-3">
+                <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-4 md:gap-6">
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">
+                            <FaInfoCircle className="inline me-1 -mt-1" />
+                            Add product image. Must be add clear,  white background image . image size must be less then 500kb*</p>
+                        <div className="flex gap-6 lg:gap-10 mt-3 flex-wrap">
+                            {getValue('media', 'array')?.map((img, index) => <div className="h-[90px] w-[90px] lg:h-[130px] lg:w-[130px] relative " key={index}>
+                                <p onClick={() => removeArrayValue('media', index)} className="absolute top-0 right-0 rounded-full cursor-pointer bg-slate-600 text-white"><IoIosClose /></p>
+                                <img key={index} src={URL.createObjectURL(img)} alt="" className=" rounded-md  w-full h-full" />
+                            </div>)}
+                            {getValue('media', 'array')?.length < 5 && <div className="h-[80px] w-[80px] lg:h-[130px] lg:w-[130px] bg-slate-200 relative cursor-pointer">
+                                <FaRegImage className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 text-3xl lg:text-5xl text-gray-500" />
+                                <p className="absolute top-full right-1 text-xs text-gray-500">{getValue('media', 'array').length}/5</p>
+                                <label htmlFor="product-image" className="absolute top-0 left-0 w-full h-full cursor-pointer"></label>
+                            </div>}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Title*</p>
+                        <input
+                            type="text"
+                            placeholder="Enter product title"
+                            name="title"
+                            onChange={onInputChange}
+                            value={getValue('title', 'string')}
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[450px]" />
+                        <input
+                            onChange={handleImage}
+                            multiple
+                            type="file"
+                            id="product-image"
+                            className="h-0 w-0 overflow-hidden" />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Description</p>
+                        <textarea
+                            rows={9}
+                            name="description"
+                            onChange={onInputChange}
+                            value={getValue('description', 'string')}
+                            placeholder="Enter product description"
+                            className="w-full p-1 lg:p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[550px] h-full max-h-[100px] lg:max-h-[120px] resize-none"
+                        ></textarea>
+                    </div>
+                    <div className="mt-6 md:mt-7">
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Price*</p>
+                        <input
+                            min={1}
+                            name="price"
+                            onChange={onInputChange}
+                            value={getValue('price', 'number')}
+                            type="number"
+                            placeholder="Enter product price (BDT)"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Discount</p>
+                        <input
+                            min={1}
+                            type="number"
+                            name="discount"
+                            onChange={onInputChange}
+                            value={getValue('discount', 'number')}
+                            placeholder="Enter Discount (BDT)"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Brand</p>
+                        <input
+                            name="brand"
+                            onChange={onInputChange}
+                            value={getValue('brand', 'string')}
+                            type="text"
+                            placeholder="Enter Brand name"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
+                    </div>
+                    <div className="mt-6 md:mt-7">
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Time*</p>
+                        <Select
+                            className="basic-single flex-1 border-0 relative max-w-[500px]"
+                            classNamePrefix="select"
+                            placeholder="Delivery Time"
+                            styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
+                            onChange={(e) =>
+                                onInputChange({
+                                    target: {
+                                        name: 'deliveryTime',
+                                        value: e.value
+                                    }
+                                })
+                            }
+                            name="color"
+                            options={deliveryTime}
+                        />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Charge*</p>
+                        <input
+                            type="number"
+                            name="deliveryCharge"
+                            onChange={onInputChange}
+                            value={getValue('deliveryCharge', 'string')}
+                            placeholder="Delivery Charge"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
+                    </div>
+                    <div className="mt-5 max-w-[300px] relative">
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Tag</p>
+                        <input
+                            onKeyUp={handleTag}
+                            type="text"
+                            placeholder="Tag type (enter separated)"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 " />
+                        <div className="flex flex-wrap mt-1 gap-2">
+                            {getValue('tags', 'array')?.map((t, index) => <span key={index} className="text-slate-100 text-xs bg-slate-600 px-2 py-1 rounded flex items-center gap-2">{t}<IoIosClose
+                                onClick={() => removeArrayValue('tags', index)}
+                                className="text-lg cursor-pointer bg-gray-200 text-gray-800 rounded-full" /></span>)}
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Title*</p>
-                    <input
-                        type="text"
-                        placeholder="Enter product title"
-                        name="title"
-                        onChange={onInputChange}
-                        value={getValue('title', 'string')}
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[450px]" />
-                    <input
-                        onChange={handleImage}
-                        multiple
-                        type="file"
-                        id="product-image"
-                        className="h-0 w-0 overflow-hidden" />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Description</p>
-                    <textarea
-                        rows={9}
-                        name="description"
-                        onChange={onInputChange}
-                        value={getValue('description', 'string')}
-                        placeholder="Enter product description"
-                        className="w-full p-1 lg:p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[550px] h-full max-h-[100px] lg:max-h-[120px] resize-none"
-                    ></textarea>
-                </div>
-                <div className="mt-6 md:mt-7">
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Price*</p>
-                    <input
-                        min={1}
-                        name="price"
-                        onChange={onInputChange}
-                        value={getValue('price', 'number')}
-                        type="number"
-                        placeholder="Enter product price (BDT)"
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Discount</p>
-                    <input
-                        min={1}
-                        type="number"
-                        name="discount"
-                        onChange={onInputChange}
-                        value={getValue('discount', 'number')}
-                        placeholder="Enter Discount (BDT)"
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Brand</p>
-                    <input
-                        name="brand"
-                        onChange={onInputChange}
-                        value={getValue('brand', 'string')}
-                        type="text"
-                        placeholder="Enter Brand name"
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
-                </div>
-                <div className="mt-6 md:mt-7">
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Time*</p>
-                    <Select
-                        className="basic-single flex-1 border-0 relative max-w-[500px]"
-                        classNamePrefix="select"
-                        placeholder="Delivery Time"
-                        styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                        onChange={(e) =>
-                            onInputChange({
+
+                <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-6">
+                    <div className="mt-6 md:mt-7">
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Category*</p>
+                        <Select
+                            className="basic-single flex-1 border-0 relative max-w-[500px]"
+                            classNamePrefix="select"
+                            placeholder="Category"
+                            styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
+                            onChange={(e) => onInputChange({
                                 target: {
-                                    name: 'deliveryTime',
+                                    name: 'category',
                                     value: e.value
                                 }
-                            })
-                        }
-                        name="color"
-                        options={deliveryTime}
-                    />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Charge*</p>
-                    <input
-                        type="number"
-                        name="deliveryCharge"
-                        onChange={onInputChange}
-                        value={getValue('deliveryCharge', 'string')}
-                        placeholder="Delivery Charge"
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
-                </div>
-                <div className="mt-5 max-w-[300px] relative">
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Tag</p>
-                    <input
-                        onKeyUp={handleTag}
-                        type="text"
-                        placeholder="Tag type (enter separated)"
-                        className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 " />
-                    <div className="flex flex-wrap mt-1 gap-2">
-                        {getValue('tags', 'array')?.map((t, index) => <span key={index} className="text-slate-100 text-xs bg-slate-600 px-2 py-1 rounded flex items-center gap-2">{t}<IoIosClose
-                            onClick={() => removeArrayValue('tags', index)}
-                            className="text-lg cursor-pointer bg-gray-200 text-gray-800 rounded-full" /></span>)}
+                            })}
+                            name="color"
+                            options={getCategoryOption()}
+                        />
                     </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Sub Category</p>
+                        <Select
+                            className="basic-single flex-1 border-0 relative max-w-[500px]"
+                            classNamePrefix="select"
+                            placeholder="Sub Category"
+                            styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
+                            onChange={(e) =>
+                                onInputChange({
+                                    target: {
+                                        name: 'subCategory',
+                                        value: e.value
+                                    }
+                                })
+                            }
+                            options={subCategory}
+                            name="color"
+                            getOptionLabel={(option) => (
+                                <div style={{ backgroundColor: option.color }}>{option.label}</div>
+                            )}
+                        />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Sub Sub Category</p>
+                        <Select
+                            className="basic-single flex-1 border-0 relative max-w-[500px]"
+                            classNamePrefix="select"
+                            placeholder="Sub Sub Category"
+                            styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
+                            onChange={(e) =>
+                                onInputChange({
+                                    target: {
+                                        name: 'subSubCategory',
+                                        value: e.value
+                                    }
+                                })
+                            }
+                            name="color"
+                            options={subSubCategory}
+                        />
+                    </div>
+                    <div>
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Color</p>
+                        {getValue('color', 'array').length > 0 && <div className="text-xs">
+                            <table className="table mb-5">
+                                <thead>
+                                    <tr>
+                                        <th>Color</th>
+                                        <th>Extra Charge</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {getValue('color', 'array').map((c, i) => <tr key={i}>
+                                        <td><p
+                                            style={{ backgroundColor: c.value }}
+                                            className={`h-4 w-4`}></p></td>
+                                        <td>{c.extraCharge}</td>
+                                        <td
+                                            onClick={() => removeArrayValue('color', i)}
+                                            className="cursor-pointer">x</td>
+                                    </tr>)}
+                                </tbody>
+                            </table>
+                        </div>}
+                        <span
+                            onClick={() => setAddNewColor(prev => !prev)}
+                            className="bg-gray-600 text-gray-100 py-1 px-3 cursor-pointer text-xs rounded">Add Color +</span>
+                        {addNewColor && <AddColor
+                            setAddNewColor={setAddNewColor}
+                            onInputChange={onInputChange}
+                            getValue={getValue}
+                        />}
+                    </div>
+                    {additionalAttributes.map((attr, index) => <Attributes
+                        key={index}
+                        name={attr}
+                        getValue={getValue}
+                        removeArrayValue={removeArrayValue}
+                        onInputChange={onInputChange}
+                    />)}
                 </div>
             </div>
-
-            <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-6">
-                <div className="mt-6 md:mt-7">
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Category*</p>
-                    <Select
-                        className="basic-single flex-1 border-0 relative max-w-[500px]"
-                        classNamePrefix="select"
-                        placeholder="Category"
-                        styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                        onChange={(e) => onInputChange({
-                            target: {
-                                name: 'category',
-                                value: e.value
-                            }
-                        })}
-                        name="color"
-                        options={getCategoryOption()}
-                    />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Sub Category</p>
-                    <Select
-                        className="basic-single flex-1 border-0 relative max-w-[500px]"
-                        classNamePrefix="select"
-                        placeholder="Sub Category"
-                        styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                        onChange={(e) =>
-                            onInputChange({
-                                target: {
-                                    name: 'subCategory',
-                                    value: e.value
-                                }
-                            })
-                        }
-                        options={subCategory}
-                        name="color"
-                        getOptionLabel={(option) => (
-                            <div style={{ backgroundColor: option.color }}>{option.label}</div>
-                        )}
-                    />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Sub Sub Category</p>
-                    <Select
-                        className="basic-single flex-1 border-0 relative max-w-[500px]"
-                        classNamePrefix="select"
-                        placeholder="Sub Sub Category"
-                        styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                        onChange={(e) =>
-                            onInputChange({
-                                target: {
-                                    name: 'subSubCategory',
-                                    value: e.value
-                                }
-                            })
-                        }
-                        name="color"
-                        options={subSubCategory}
-                    />
-                </div>
-                <div>
-                    <p className="text-xs lg:text-sm text-gray-600 mb-2">Color</p>
-                    {getValue('color', 'array').length > 0 && <div className="text-xs">
-                        <table className="table mb-5">
-                            <thead>
-                                <tr>
-                                    <th>Color</th>
-                                    <th>Extra Charge</th>
-                                    <th>Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {getValue('color', 'array').map((c, i) => <tr key={i}>
-                                    <td><p
-                                        style={{ backgroundColor: c.value }}
-                                        className={`h-4 w-4`}></p></td>
-                                    <td>{c.extraCharge}</td>
-                                    <td
-                                        onClick={() => removeArrayValue('color', i)}
-                                        className="cursor-pointer">x</td>
-                                </tr>)}
-                            </tbody>
-                        </table>
-                    </div>}
-                    <span
-                        onClick={() => setAddNewColor(prev => !prev)}
-                        className="bg-gray-600 text-gray-100 py-1 px-3 cursor-pointer text-xs rounded">Add Color +</span>
-                    {addNewColor && <AddColor
-                        setAddNewColor={setAddNewColor}
-                        onInputChange={onInputChange}
-                        getValue={getValue}
-                    />}
-                </div>
-                {additionalAttributes.map((attr, index) => <Attributes
-                    key={index}
-                    name={attr}
-                    getValue={getValue}
-                    removeArrayValue={removeArrayValue}
-                    onInputChange={onInputChange}
-                />)}
+            <div className="flex justify-center">
+                <button
+                    onClick={onSubmit}
+                    className="bg-gray-700 py-2 px-10 rounded-md text-white mt-3 shadow-md">Create</button>
             </div>
         </div>
     );

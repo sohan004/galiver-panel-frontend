@@ -40,7 +40,7 @@ const AddSize = ({ setState, name, onInputChange, getValue }) => {
                     type="number"
                     value={extraCharge}
                     onChange={(e) => setExtraCharge(e.target.value)}
-                    placeholder="Extra charge"
+                    placeholder="Extra charge BDT"
                     className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
                 <div className="flex gap-3">
                     <button

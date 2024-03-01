@@ -5,6 +5,7 @@ import { toggleGlobalLoading } from "../../components/Modal/components/GlobalLoa
 import getMedia from "../../utilities/getMedia";
 import BottomLoading from "../../components/BottomLoading/BottomLoading";
 import useGetCategories from "../../Hooks/useGetCategories";
+import toast from "react-hot-toast";
 
 const Categories = () => {
     const [addNew, setAddNew] = useState(false)
@@ -26,6 +27,7 @@ const Categories = () => {
             .then(data => {
                 if (data.success) {
                     setCategories(categories.filter(category => category._id !== id))
+                    toast.success('Category deleted successfully')
                 }
             })
             .finally(() => {
