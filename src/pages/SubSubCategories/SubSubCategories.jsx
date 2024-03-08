@@ -6,14 +6,15 @@ import AddNewSubSubCategories from "./AddNewSubSubCategories/AddNewSubSubCategor
 import { toggleGlobalLoading } from "../../components/Modal/components/GlobalLoading/GlobalLoading";
 import { BACKEND_URL } from "../../App";
 import toast from "react-hot-toast";
+import TableSkelaton from "../../components/TableSkelaton/TableSkelaton";
 
 const SubSubCategories = () => {
     const [search, setSearch] = useState('')
     const [addNew, setAddNew] = useState(false)
-    const [subSubCategories, setSubSubCategories, totalSubSubCategories, setTotalSubSubCategories, loadData] = useGetSubSubCategories(search)
+    const [subSubCategories, setSubSubCategories, totalSubSubCategories, setTotalSubSubCategories, loadData, loading] = useGetSubSubCategories(search)
     const searchInputRef = useRef()
 
-    
+
     const deleteCategory = (id) => {
         toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/sub-sub-category/${id}`, {
@@ -54,7 +55,7 @@ const SubSubCategories = () => {
                         type="text"
                         className="outline-none p-1 bg-white rounded-md border-b-2 w-full mt-1"
                         placeholder="Search Sub Sub Categories" />
-                    <FaSearch onClick={handleSearch} className="absolute top-2/4 -translate-y-2/4 right-3 cursor-pointer text-gray-500" />
+                    <FaSearch onClick={handleSearch} className="absolute top-2/4 -translate-y-2/4 right-3 cursor-pointer bg-white text-gray-500" />
                 </div>
                 <button
                     onClick={() => setAddNew(true)}
@@ -75,7 +76,7 @@ const SubSubCategories = () => {
                                     Sub Sub Category
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                   Sub Category
+                                    Sub Category
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Action
@@ -107,7 +108,7 @@ const SubSubCategories = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* <BottomLoading loading={loading} /> */}
+                {loading && <TableSkelaton />}
                 {totalSubSubCategories > subSubCategories.length && <div className="flex justify-center mt-4">
                     <button
                         onClick={loadData}

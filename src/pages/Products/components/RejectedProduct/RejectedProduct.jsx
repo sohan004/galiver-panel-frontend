@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import getMedia from "../../../../utilities/getMedia";
 import { toggleGlobalLoading } from "../../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import { BACKEND_URL } from "../../../../App";
+import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 
 const RejectedProduct = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        toggleGlobalLoading('open')
+        setLoading(true)
         fetch(`${BACKEND_URL}/api/v1/product/reject`, {
             method: 'GET',
             headers: {
@@ -17,7 +19,7 @@ const RejectedProduct = () => {
             .then(response => response.json())
             .then(data => {
                 setData(data)
-                toggleGlobalLoading('close')
+                setLoading(false)
             })
     }, []);
 
@@ -74,7 +76,7 @@ const RejectedProduct = () => {
                                 {product?.title}
                             </td>
                             <td>
-                                {product?.price}
+                            ৳{product?.price}
                             </td>
                             <td className="text-red-600">
                                 {product?.status}
@@ -89,9 +91,9 @@ const RejectedProduct = () => {
                             </td>
                         </tr>)}
                     </tbody>
-
                 </table>
             </div>
+            {loading && <TableSkelaton />}
         </div>
     );
 };

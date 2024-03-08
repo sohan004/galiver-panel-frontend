@@ -6,13 +6,12 @@ import getMedia from "../../utilities/getMedia";
 import BottomLoading from "../../components/BottomLoading/BottomLoading";
 import useGetCategories from "../../Hooks/useGetCategories";
 import toast from "react-hot-toast";
+import TableSkelaton from "../../components/TableSkelaton/TableSkelaton";
 
 const Categories = () => {
     const [addNew, setAddNew] = useState(false)
 
     const [categories, setCategories, loading] = useGetCategories()
-
-
 
     const deleteCategory = (id) => {
         toggleGlobalLoading('open')
@@ -88,6 +87,7 @@ const Categories = () => {
                 {/* <BottomLoading loading={loading} /> */}
                 {addNew && <AddNewCategories setCategories={setCategories} categories={categories} setState={setAddNew} />}
             </div>
+            {loading && <TableSkelaton />}
         </div>
     );
 };

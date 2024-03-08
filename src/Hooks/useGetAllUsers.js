@@ -24,7 +24,6 @@ const useGetAllUsers = (search) => {
 
     const loadMore = () => {
         setLoading(true);
-        toggleGlobalLoading('open')
         loadData(users.length)
             .then((response) => response.json())
             .then((data) => {
@@ -34,13 +33,12 @@ const useGetAllUsers = (search) => {
             })
             .finally(() => {
                 setLoading(false);
-                toggleGlobalLoading('close')
             });
     };
 
     useEffect(() => {
         setLoading(true);
-        toggleGlobalLoading('open')
+        ('open')
         loadData(0)
             .then((response) => response.json())
             .then((data) => {
@@ -51,7 +49,6 @@ const useGetAllUsers = (search) => {
             })
             .finally(() => {
                 setLoading(false);
-                toggleGlobalLoading('close')
             });
     }, [search]);
 

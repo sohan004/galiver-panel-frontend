@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../../../App";
 import { toggleGlobalLoading } from "../../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import getMedia from "../../../../utilities/getMedia";
+import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 
 const PendingProduct = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        toggleGlobalLoading('open')
+        setLoading(true)
         fetch(`${BACKEND_URL}/api/v1/product/pending`, {
             method: 'GET',
             headers: {
@@ -17,7 +19,7 @@ const PendingProduct = () => {
             .then(response => response.json())
             .then(data => {
                 setData(data)
-                toggleGlobalLoading('close')
+                setLoading(false)
             })
     }, []);
 
@@ -91,7 +93,7 @@ const PendingProduct = () => {
                                 {product?.title}
                             </td>
                             <td>
-                                {product?.price}
+                                ৳{product?.price}
                             </td>
                             <td className="text-orange-500">
                                 {product?.status}
@@ -114,6 +116,7 @@ const PendingProduct = () => {
 
                 </table>
             </div>
+            {loading && <TableSkelaton />}
         </div>
     );
 };

@@ -9,7 +9,6 @@ const useGetSubSubCategories = (text) => {
 
     const loadData = () => {
         setLoading(true)
-        toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/sub-sub-category?name=${text || ''}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
@@ -21,13 +20,11 @@ const useGetSubSubCategories = (text) => {
             })
             .finally(() => {
                 setLoading(false)
-                toggleGlobalLoading('close')
             })
     }
 
     useEffect(() => {
         setLoading(true)
-        toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/sub-sub-category?name=${text || ''}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
@@ -40,7 +37,6 @@ const useGetSubSubCategories = (text) => {
             })
             .finally(() => {
                 setLoading(false)
-                toggleGlobalLoading('close')
             })
     }, [text])
 

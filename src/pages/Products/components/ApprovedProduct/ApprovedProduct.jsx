@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import getMedia from "../../../../utilities/getMedia";
 import { BACKEND_URL } from "../../../../App";
 import { toggleGlobalLoading } from "../../../../components/Modal/components/GlobalLoading/GlobalLoading";
+import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 
 const ApprovedProduct = () => {
     const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
-        toggleGlobalLoading('open')
+        setLoading(true)
         fetch(`${BACKEND_URL}/api/v1/product/approve`, {
             method: 'GET',
             headers: {
@@ -16,7 +19,7 @@ const ApprovedProduct = () => {
             .then(response => response.json())
             .then(data => {
                 setData(data)
-                toggleGlobalLoading('close')
+                setLoading(false)
             })
     }, []);
 
@@ -61,7 +64,7 @@ const ApprovedProduct = () => {
     }
 
     return (
-        <div>
+        <div className="w-full">
             <p className="mt-3">Total: {data?.length}</p>
             <div className="overflow-x-auto">
                 <table className="  text-sm text-left  text-gray-500  w-full  bg-white shadow-md">
@@ -83,7 +86,7 @@ const ApprovedProduct = () => {
                                 status
                             </th>
                             <th scope="col" className="px-6 py-3">
-                              cng status
+                                cng status
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 details
@@ -105,7 +108,7 @@ const ApprovedProduct = () => {
                                 {product?.title}
                             </td>
                             <td>
-                                {product?.price}
+                                ৳{product?.price}
                             </td>
                             <td>
                                 {product?.click}
@@ -118,7 +121,7 @@ const ApprovedProduct = () => {
                                     <input type="checkbox"
                                         onChange={() => product?.status === 'active' ? inActive(product?._id) : active(product?._id)}
                                         checked={product?.status === 'active' ? true : false}
-                                        className="sr-only peer" />
+                                        className="h-0 w-0 overflow-hidden peer" />
                                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                 </label>
                             </td>
@@ -135,9 +138,9 @@ const ApprovedProduct = () => {
                             </td>
                         </tr>)}
                     </tbody>
-
                 </table>
             </div>
+            {loading && <TableSkelaton />}
         </div>
     );
 };

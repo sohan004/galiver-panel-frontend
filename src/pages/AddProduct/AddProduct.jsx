@@ -10,6 +10,7 @@ import useGetCategories from "../../Hooks/useGetCategories";
 import { BACKEND_URL } from "../../App";
 import { toggleGlobalLoading } from "../../components/Modal/components/GlobalLoading/GlobalLoading";
 import Attributes from "./components/Attributes/Attributes";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
     const [inputData, setInputData] = useState({})
@@ -17,6 +18,7 @@ const AddProduct = () => {
     const [categories] = useGetCategories()
     const [subCategory, setSubCategory] = useState([])
     const [subSubCategory, setSubSubCategory] = useState([])
+    const navigate = useNavigate()
 
     const onInputChange = (e) => {
         const name = e.target.name
@@ -180,6 +182,7 @@ const AddProduct = () => {
                 if (data.success) {
                     toast.success('Product added successfully')
                     setInputData({})
+                    navigate('/products/pending')
                 }
                 else {
                     toast.error(data.message)

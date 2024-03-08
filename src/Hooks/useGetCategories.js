@@ -8,7 +8,6 @@ const useGetCategories = () => {
 
     useEffect(() => {
         setLoading(true)
-        toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/category/get-category-admin`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
@@ -20,7 +19,6 @@ const useGetCategories = () => {
             })
             .finally(() => {
                 setLoading(false)
-                toggleGlobalLoading('close')
             })
     }, []);
 

@@ -7,11 +7,12 @@ import { toggleGlobalLoading } from '../../components/Modal/components/GlobalLoa
 import { BACKEND_URL } from '../../App';
 import { FaSearch } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import TableSkelaton from '../../components/TableSkelaton/TableSkelaton';
 
 const SubCategories = () => {
     const [search, setSearch] = useState('')
     const [addNew, setAddNew] = useState(false)
-    const [subCategories, setSubCategories, totalSubCategories,setTotalSubCategories, loadData, loading] = useGetSubCategories(search)
+    const [subCategories, setSubCategories, totalSubCategories, setTotalSubCategories, loadData, loading] = useGetSubCategories(search)
     const searchInputRef = useRef()
 
 
@@ -28,7 +29,7 @@ const SubCategories = () => {
             .then(data => {
                 if (data.success) {
                     setSubCategories(subCategories.filter(category => category._id !== id))
-                    setTotalSubCategories(totalSubCategories-1)
+                    setTotalSubCategories(totalSubCategories - 1)
                     toast.success('Sub Category deleted successfully')
                 }
             })
@@ -108,7 +109,7 @@ const SubCategories = () => {
                         </tbody>
                     </table>
                 </div>
-                {/* <BottomLoading loading={loading} /> */}
+                {loading && <TableSkelaton />}
                 {totalSubCategories > subCategories.length && <div className="flex justify-center mt-4">
                     <button
                         onClick={loadData}

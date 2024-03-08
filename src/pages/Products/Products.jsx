@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { BACKEND_URL } from '../../App';
-import { toggleGlobalLoading } from '../../components/Modal/components/GlobalLoading/GlobalLoading';
-import { socket } from '../../Hooks/useSockeConnect';
-
 const Products = () => {
 
     const [total, setTotal] = useState({});
 
     useEffect(() => {
-        toggleGlobalLoading('open');
         fetch(`${BACKEND_URL}/api/v1/product/in-total-product`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
@@ -20,7 +16,6 @@ const Products = () => {
                 setTotal(data);
             })
             .finally(() => {
-                toggleGlobalLoading(false);
             })
     }, []);
 

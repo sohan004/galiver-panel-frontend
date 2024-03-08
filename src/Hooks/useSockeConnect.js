@@ -16,7 +16,6 @@ const useSocketConnect = () => {
         const socketConnection = io.connect(BACKEND_URL, {
             query: {
                 userID: user?._id || '',
-                role: user?.role || ''
             }
         })
         socket = socketConnection

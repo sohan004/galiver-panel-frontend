@@ -3,6 +3,7 @@ import { FaSearch, FaUser } from "react-icons/fa";
 import useGetAllUsers from "../../Hooks/useGetAllUsers";
 import moment from "moment";
 import BottomLoading from "../../components/BottomLoading/BottomLoading";
+import TableSkelaton from "../../components/TableSkelaton/TableSkelaton";
 
 const Users = () => {
     const [search, setSearch] = useState('')
@@ -93,6 +94,7 @@ const Users = () => {
                         </tbody>
                     </table>
                 </div>
+                {loading && <TableSkelaton/>}
                 {totalUsers > users.length && <div className="flex justify-center mt-4">
                     <button
                         onClick={loadMore}
