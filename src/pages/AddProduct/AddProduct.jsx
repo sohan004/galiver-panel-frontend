@@ -10,15 +10,48 @@ import useGetCategories from "../../Hooks/useGetCategories";
 import { BACKEND_URL } from "../../App";
 import { toggleGlobalLoading } from "../../components/Modal/components/GlobalLoading/GlobalLoading";
 import Attributes from "./components/Attributes/Attributes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { set } from "firebase/database";
 
 const AddProduct = () => {
-    const [inputData, setInputData] = useState({})
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [loading, setLoading] = useState(true)
+    const [productData, setProductData] = useState(null)
+    const id = searchParams.get('updateId')
+
+
+    const [inputData, setInputData] = useState({
+    })
     const [addNewColor, setAddNewColor] = useState(false)
     const [categories] = useGetCategories()
     const [subCategory, setSubCategory] = useState([])
     const [subSubCategory, setSubSubCategory] = useState([])
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (id) {
+            fetch(`${BACKEND_URL}/api/v1/product/detail/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data?._id) {
+                        setProductData(data)
+                        const { isFavorite, reviews, status, totalReview, attributes, category, subCategory, subSubCategory, media, _id, ...othersData } = data
+                        setInputData({
+                            ...othersData,
+                            category: category?._id,
+                            subCategory: subCategory?._id || '',
+                            subSubCategory: subSubCategory?._id || '',
+                            ...attributes
+                        })
+                        setLoading(false)
+                    }
+                })
+        }
+        else {
+            setLoading(false)
+        }
+    }, [id])
 
     const onInputChange = (e) => {
         const name = e.target.name
@@ -191,14 +224,59 @@ const AddProduct = () => {
             .finally(() => {
                 toggleGlobalLoading('close')
             })
-
     }
+
+    const onUpdate = () => {
+        let error = false
+        requiredProductFelids.forEach((field) => {
+            if (field === 'media') return
+            if (error) return
+            const value = inputData[field]
+            const validArray = Array.isArray(value)
+            if (!value) {
+                error = true
+                return toast.error(`${field} is required`)
+            }
+            if (validArray && value.length < 1) {
+                error = true
+                return toast.error(`${field} is required`)
+            }
+        })
+        if (error) return
+
+        toggleGlobalLoading('open')
+        fetch(`${BACKEND_URL}/api/v1/product/${id}`, {
+            method: 'PUT',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(inputData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    toast.success('Product updated successfully')
+                    navigate('/products/approved')
+                }
+                else {
+                    toast.error('Failed to update product')
+                }
+            })
+            .finally(() => {
+                toggleGlobalLoading('close')
+            })
+    }
+
+
+
+    if (loading) return <div className="text-center">Loading...</div>
 
     return (
         <div>
             <div className="flex flex-col lg:flex-row w-full gap-5 lg:gap-3">
                 <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-4 md:gap-6">
-                    <div>
+                    {!productData && <div>
                         <p className="text-xs lg:text-sm text-gray-600 mb-2">
                             <FaInfoCircle className="inline me-1 -mt-1" />
                             Add product image. Must be add clear,  white background image . image size must be less then 500kb*</p>
@@ -213,7 +291,7 @@ const AddProduct = () => {
                                 <label htmlFor="product-image" className="absolute top-0 left-0 w-full h-full cursor-pointer"></label>
                             </div>}
                         </div>
-                    </div>
+                    </div>}
                     <div>
                         <p className="text-xs lg:text-sm text-gray-600 mb-2">Title*</p>
                         <input
@@ -273,35 +351,6 @@ const AddProduct = () => {
                             placeholder="Enter Brand name"
                             className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
                     </div>
-                    <div className="mt-6 md:mt-7">
-                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Time*</p>
-                        <Select
-                            className="basic-single flex-1 border-0 relative max-w-[500px]"
-                            classNamePrefix="select"
-                            placeholder="Delivery Time"
-                            styles={{ control: (baseStyles) => (inputStyle(baseStyles)) }}
-                            onChange={(e) =>
-                                onInputChange({
-                                    target: {
-                                        name: 'deliveryTime',
-                                        value: e.value
-                                    }
-                                })
-                            }
-                            name="color"
-                            options={deliveryTime}
-                        />
-                    </div>
-                    <div>
-                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Delivery Charge*</p>
-                        <input
-                            type="number"
-                            name="deliveryCharge"
-                            onChange={onInputChange}
-                            value={getValue('deliveryCharge', 'string')}
-                            placeholder="Delivery Charge"
-                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[300px]" />
-                    </div>
                     <div className="mt-5 max-w-[300px] relative">
                         <p className="text-xs lg:text-sm text-gray-600 mb-2">Tag</p>
                         <input
@@ -332,6 +381,7 @@ const AddProduct = () => {
                                 }
                             })}
                             name="color"
+                            value={getCategoryOption().find((cat) => cat.value === getValue('category', 'string'))}
                             options={getCategoryOption()}
                         />
                     </div>
@@ -350,6 +400,7 @@ const AddProduct = () => {
                                     }
                                 })
                             }
+                            value={subCategory.find((cat) => cat.value === getValue('subCategory', 'string'))}
                             options={subCategory}
                             name="color"
                             getOptionLabel={(option) => (
@@ -372,6 +423,7 @@ const AddProduct = () => {
                                     }
                                 })
                             }
+                            value={subSubCategory.find((cat) => cat.value === getValue('subSubCategory', 'string'))}
                             name="color"
                             options={subSubCategory}
                         />
@@ -420,8 +472,8 @@ const AddProduct = () => {
             </div>
             <div className="flex justify-center">
                 <button
-                    onClick={onSubmit}
-                    className="bg-gray-700 py-2 px-10 rounded-md text-white mt-3 shadow-md">Create</button>
+                    onClick={productData ? onUpdate : onSubmit}
+                    className="bg-gray-700 py-2 px-10 rounded-md text-white mt-3 shadow-md">{productData ? 'Save Changes' : 'Create'}</button>
             </div>
         </div>
     );

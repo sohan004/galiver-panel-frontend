@@ -18,7 +18,7 @@ import ApprovedProduct from "./pages/Products/components/ApprovedProduct/Approve
 import PendingProduct from "./pages/Products/components/PendingProduct/PendingProduct";
 import RejectedProduct from "./pages/Products/components/RejectedProduct/RejectedProduct";
 
-export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
+export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://api.galiver.shop'
 
 
 const App = () => {

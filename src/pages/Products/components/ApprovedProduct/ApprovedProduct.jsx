@@ -3,10 +3,13 @@ import getMedia from "../../../../utilities/getMedia";
 import { BACKEND_URL } from "../../../../App";
 import { toggleGlobalLoading } from "../../../../components/Modal/components/GlobalLoading/GlobalLoading";
 import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ApprovedProduct = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         setLoading(true)
@@ -63,6 +66,22 @@ const ApprovedProduct = () => {
             })
     }
 
+    const onDelete = (id) => {
+        toggleGlobalLoading('open')
+        fetch(`${BACKEND_URL}/api/v1/product/${id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('admin-token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setData(prev => prev.filter(product => product._id !== id))
+                toggleGlobalLoading('close')
+                toast.success('Product Deleted Successfully')
+            })
+    }
+
     return (
         <div className="w-full">
             <p className="mt-3">Total: {data?.length}</p>
@@ -80,7 +99,7 @@ const ApprovedProduct = () => {
                                 price
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                click
+                                discount
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 status
@@ -89,13 +108,10 @@ const ApprovedProduct = () => {
                                 cng status
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                details
-                            </th>
-                            <th scope="col" className="px-6 py-3">
                                 edit
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                suspend
+                                delete
                             </th>
                         </tr>
                     </thead>
@@ -111,7 +127,7 @@ const ApprovedProduct = () => {
                                 ৳{product?.price}
                             </td>
                             <td>
-                                {product?.click}
+                                ৳{product?.discount}
                             </td>
                             <td className={product?.status === 'active' ? 'text-green-600' : 'text-red-600'}>
                                 {product?.status}
@@ -126,15 +142,14 @@ const ApprovedProduct = () => {
                                 </label>
                             </td>
                             <td>
-                                <button className="bg-green-600 text-white px-2 py-1 text-xs rounded-md ">Details</button>
-                            </td>
-                            <td>
-                                <button className="bg-orange-600 text-white px-2 py-1 text-xs rounded-md ">Edit</button>
+                                <button
+                                    onClick={() => navigate(`/add-product?updateId=${product?._id}`)}
+                                    className="bg-orange-600 text-white px-2 py-1 text-xs rounded-md ">Edit</button>
                             </td>
                             <td className="">
                                 <button
-                                    // onClick={() => approve(product?._id)}
-                                    className="bg-red-600 text-white px-2 py-1 text-xs rounded-md ">suspend</button>
+                                    onClick={() => onDelete(product?._id)}
+                                    className="bg-red-600 text-white px-2 py-1 text-xs rounded-md ">Delete</button>
                             </td>
                         </tr>)}
                     </tbody>

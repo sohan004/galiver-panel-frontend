@@ -3,8 +3,6 @@ export const requiredProductFelids = [
     'price',
     'media',
     'category',
-    'deliveryTime',
-    'deliveryCharge',
 ]
 
 export const colorsArray = [
