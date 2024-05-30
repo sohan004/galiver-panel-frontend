@@ -36,12 +36,13 @@ const AddProduct = () => {
                 .then(data => {
                     if (data?._id) {
                         setProductData(data)
-                        const { isFavorite, reviews, status, totalReview, attributes, category, subCategory, subSubCategory, media, _id, ...othersData } = data
+                        const { isFavorite, reviews, status, totalReview, attributes, category, subCategory : sub, subSubCategory: subSub, media, _id, ...othersData } = data
+                        console.log(category, sub, subSub);
                         setInputData({
                             ...othersData,
                             category: category?._id,
-                            subCategory: subCategory?._id || '',
-                            subSubCategory: subSubCategory?._id || '',
+                            subCategory: sub?._id  || '',
+                            subSubCategory: subSub?._id || '',
                             ...attributes
                         })
                         setLoading(false)
@@ -132,12 +133,12 @@ const AddProduct = () => {
 
     useEffect(() => {
         if (inputData?.category) {
-            onInputChange({
-                target: {
-                    name: 'subCategory',
-                    value: ''
-                }
-            })
+            // onInputChange({
+            //     target: {
+            //         name: 'subCategory',
+            //         value: ''
+            //     }
+            // })
             toggleGlobalLoading('open')
             fetch(`${BACKEND_URL}/api/v1/sub-category/${inputData?.category}`, {
                 headers: {
@@ -155,12 +156,12 @@ const AddProduct = () => {
 
     useEffect(() => {
         if (inputData?.subCategory) {
-            onInputChange({
-                target: {
-                    name: 'subSubCategory',
-                    value: ''
-                }
-            })
+            // onInputChange({
+            //     target: {
+            //         name: 'subSubCategory',
+            //         value: ''
+            //     }
+            // })
             toggleGlobalLoading('open')
             fetch(`${BACKEND_URL}/api/v1/sub-sub-category/${inputData?.subCategory}`, {
                 headers: {
@@ -423,7 +424,7 @@ const AddProduct = () => {
                                     }
                                 })
                             }
-                            value={subSubCategory.find((cat) => cat.value === getValue('subSubCategory', 'string'))}
+                            value={subSubCategory.find((cat) => cat.value == getValue('subSubCategory', 'string'))}
                             name="color"
                             options={subSubCategory}
                         />
