@@ -17,6 +17,14 @@ import Products from "./pages/Products/Products";
 import ApprovedProduct from "./pages/Products/components/ApprovedProduct/ApprovedProduct";
 import PendingProduct from "./pages/Products/components/PendingProduct/PendingProduct";
 import RejectedProduct from "./pages/Products/components/RejectedProduct/RejectedProduct";
+import Courier from "./pages/Courier/Courier";
+import Orders from "./pages/Orders/Orders";
+import Pending from "./pages/Orders/componets/Pending/Pending";
+import Accepted from "./pages/Orders/componets/Accepted/Accepted";
+import Shipped from "./pages/Orders/componets/Shipped/Shipped";
+import Returned from "./pages/Orders/componets/Returned/Returned";
+import Canceled from "./pages/Orders/componets/Canceled/Canceled";
+import Confirmed from "./pages/Orders/componets/Confirmed/Confirmed";
 
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://www.api.galiver.shop'
 
@@ -79,6 +87,44 @@ const App = () => {
         {
           path: "/add-product",
           element: <AddProduct></AddProduct>
+        },
+        {
+          path: "/courier",
+          element: <Courier></Courier>
+        },
+        {
+          path: "/orders",
+          element: <Orders></Orders>,
+          children: [
+            {
+              path: "/orders",
+              element:   <Navigate to="/orders/pending"></Navigate>
+            },
+            {
+              path: "/orders/pending",
+              element: <Pending></Pending>
+            },
+            {
+              path: "/orders/accepted",
+              element: <Accepted></Accepted>
+            },
+            {
+              path: "/orders/shipped",
+              element: <Shipped></Shipped>
+            },
+            {
+              path: "/orders/returned",
+              element: <Returned></Returned>
+            },
+            {
+              path: "/orders/canceled",
+              element: <Canceled></Canceled>
+            },
+            {
+              path: "/orders/delivered",
+              element: <Confirmed></Confirmed>
+            },
+          ]
         },
       ]
     },
