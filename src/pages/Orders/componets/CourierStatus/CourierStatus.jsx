@@ -6,7 +6,10 @@ const CourierStatus = ({ trackId }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if(!trackId) return;
+        if (!trackId) {
+            setLoading(false)
+            return;
+        }
         setLoading(true)
         fetch(`${BACKEND_URL}/api/v1/courier/track/${trackId}`, {
             headers: {
