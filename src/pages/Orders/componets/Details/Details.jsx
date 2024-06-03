@@ -4,7 +4,7 @@ import { BACKEND_URL } from '../../../../App';
 import { toggleGlobalLoading } from '../../../../components/Modal/components/GlobalLoading/GlobalLoading';
 
 const Details = ({ order, setOrder }) => {
-    const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge } = order
+    const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
     const [showModal, setShowModal] = useState(false)
     const [note, setNote] = useState('')
 
@@ -65,6 +65,7 @@ const Details = ({ order, setOrder }) => {
 
                     <h3 className='border-b border-gray-300 pb-3 text-center font-bold md:text-lg v'>Order Id: {_id}</h3>
                     <div className='mt-3 border-b border-gray-300 pb-3'>
+                        <p className='text-gray-800 text-lg md:text-xl font-medium'>Consignment id : <span>{consignment_id}</span></p>
                         <p className='text-gray-800 md:text-lg font-medium'>Name : <span>{name}</span></p>
                         <p className='text-gray-800 md:text-lg font-medium'>Phone : <span>{phone}</span></p>
                         <p className='text-gray-800 md:text-lg font-medium'>Upazila : <span>{subDistrict}</span></p>
@@ -80,10 +81,9 @@ const Details = ({ order, setOrder }) => {
                             <p>{index + 1}.</p>
                             <div>
                                 <p>Product Name: {product?.product.title}</p>
-                                <p>Product Price: {product?.product.price}</p>
-                                <p>Product Discount: {product?.product.discount}</p>
+                                <p>Product Price: {product?.product.price - product?.product.discount}</p>
                                 <p>Product Quantity: {product?.quantity}x</p>
-                                <p> Total: {(product?.quantity * product?.product.price) - product?.product.discount}</p>
+                                <p> Total: {(product?.quantity * (product?.product.price - product?.product.discount))}</p>
                             </div>
                         </div>)}
                     </div>
