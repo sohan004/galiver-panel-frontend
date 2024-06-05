@@ -25,7 +25,7 @@ const CourierStatus = ({ trackId }) => {
             })
     }, []);
 
-    if (aloading) return <span>Loading...</span>;
+    if (loading) return <span>Loading...</span>;
     if (!status) return <span></span>;
 
     return (
