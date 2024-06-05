@@ -83,6 +83,13 @@ const Details = ({ order, setOrder }) => {
                                 <p>Product Name: {product?.product.title}</p>
                                 <p>Product Price: {product?.product.price - product?.product.discount}</p>
                                 <p>Product Quantity: {product?.quantity}x</p>
+                                {product?.color && <p>Color : {product?.color}</p>}
+                                {product?.size && <p>Size : {product?.size}</p>}
+                                {product?.height && <p>Size : {product?.height}</p>}
+                                {product?.width && <p>Size : {product?.width}</p>}
+                                {product?.material && <p>Size : {product?.material}</p>}
+                                {product?.variant && <p>Size : {product?.variant}</p>}
+
                                 <p> Total: {(product?.quantity * (product?.product.price - product?.product.discount))}</p>
                             </div>
                         </div>)}

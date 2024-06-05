@@ -26,6 +26,7 @@ import Returned from "./pages/Orders/componets/Returned/Returned";
 import Canceled from "./pages/Orders/componets/Canceled/Canceled";
 import Confirmed from "./pages/Orders/componets/Confirmed/Confirmed";
 
+// export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://www.api.galiver.shop'
 
 
