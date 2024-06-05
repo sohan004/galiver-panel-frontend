@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../../App';
 import { toggleGlobalLoading } from '../../../../components/Modal/components/GlobalLoading/GlobalLoading';
+import getMedia from '../../../../utilities/getMedia';
 
 const Details = ({ order, setOrder }) => {
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
@@ -79,16 +80,19 @@ const Details = ({ order, setOrder }) => {
                             className=' mt-4 flex gap-2'
                             key={index}>
                             <p>{index + 1}.</p>
+                            <img 
+                             className='md:w-20 md:h-20 w-10 h-10 rounded object-cover'
+                            src={getMedia(product?.product?.media?.name)} alt="" />
                             <div>
                                 <p>Product Name: {product?.product.title}</p>
                                 <p>Product Price: {product?.product.price - product?.product.discount}</p>
                                 <p>Product Quantity: {product?.quantity}x</p>
-                                {product?.color && <p>Color : {product?.color}</p>}
-                                {product?.size && <p>Size : {product?.size}</p>}
-                                {product?.height && <p>Height : {product?.height}</p>}
-                                {product?.width && <p>Width : {product?.width}</p>}
-                                {product?.material && <p>Material : {product?.material}</p>}
-                                {product?.variant && <p>Variant : {product?.variant}</p>}
+                                {product?.color && (product?.color !== "N/A") && <p>Color : {product?.color}</p>}
+                                {product?.size && (product?.size !== "N/A") && <p>Size : {product?.size}</p>}
+                                {product?.height && (product?.height !== "N/A") && <p>Height : {product?.height}</p>}
+                                {product?.width && (product?.width !== "N/A") && <p>Width : {product?.width}</p>}
+                                {product?.material && (product?.material !== "N/A") && <p>Material : {product?.material}</p>}
+                                {product?.variant && (product?.variant !== "N/A") && <p>Variant : {product?.variant}</p>}
 
                                 <p> Total: {(product?.quantity * (product?.product.price - product?.product.discount))}</p>
                             </div>

@@ -49,7 +49,7 @@ const Pending = () => {
                     </thead>
                     <tbody>
                         {orders.map((order, index) => <tr className="bg-white border-b " key={order?._id}>
-                            <td >
+                            <td  className="py-4">
                                 {index + 1}
                             </td>
                             <td >

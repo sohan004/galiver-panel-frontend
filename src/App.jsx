@@ -61,7 +61,7 @@ const App = () => {
             },
             {
               path: "/products/approved",
-              element:  <ApprovedProduct></ApprovedProduct> 
+              element: <ApprovedProduct></ApprovedProduct>
             },
             {
               path: "/products/pending",
@@ -99,7 +99,7 @@ const App = () => {
           children: [
             {
               path: "/orders",
-              element:   <Navigate to="/orders/pending"></Navigate>
+              element: <Navigate to="/orders/pending"></Navigate>
             },
             {
               path: "/orders/pending",
@@ -138,7 +138,7 @@ const App = () => {
   return (
     <div className="bg-white text-black">
       <RouterProvider router={router} ></RouterProvider>
-      
+
       <Modal />
 
       <Toaster

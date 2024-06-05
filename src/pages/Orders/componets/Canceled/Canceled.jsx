@@ -3,6 +3,7 @@ import { BACKEND_URL } from "../../../../App";
 import Details from "../Details/Details";
 import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 import CourierStatus from "../CourierStatus/CourierStatus";
+import { toggleGlobalLoading } from "../../../../components/Modal/components/GlobalLoading/GlobalLoading";
 
 const Canceled = () => {
     const [orders, setOrder] = useState([])
@@ -23,6 +24,26 @@ const Canceled = () => {
                 setLoading(false)
             })
     }, [])
+
+    const changeStatus = (id, status) => {
+        toggleGlobalLoading('open')
+        fetch(`${BACKEND_URL}/api/v1/order`, {
+            method: 'PUT',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId: id, status })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setOrder(prev => prev.filter(order => order._id != id))
+            })
+            .finally(() => {
+                toggleGlobalLoading('close')
+            })
+    }
 
 
     return (
@@ -47,11 +68,14 @@ const Canceled = () => {
                             <th scope="col" className="px-6 py-3">
                                 Details
                             </th>
+                            <th scope="col" className="px-6 py-3">
+                                Recover Order
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order, index) => <tr className="bg-white border-b " key={order?._id}>
-                            <td >
+                        {orders.map((order, index) => <tr className="bg-white  border-b " key={order?._id}>
+                            <td className="py-4">
                                 {index + 1}
                             </td>
                             <td >
@@ -65,6 +89,11 @@ const Canceled = () => {
                             </td>
                             <td className="">
                                 <Details order={order} setOrder={setOrder}></Details>
+                            </td>
+                            <td className="">
+                               <button
+                                onClick={() => changeStatus(order?._id, 'pending')}
+                               className="btn btn-error text-white px-2 py-1 text-xs rounded-md btn-xs">Recovery order</button>
                             </td>
                         </tr>)}
                     </tbody>
