@@ -3,6 +3,7 @@ import getMedia from "../../../../utilities/getMedia";
 import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 import { BACKEND_URL } from "../../../../App";
 import Details from "../Details/Details";
+import Edit from "../Edit/Edit";
 
 const Pending = () => {
     const [orders, setOrder] = useState([])
@@ -43,6 +44,9 @@ const Pending = () => {
                                 Price
                             </th>
                             <th scope="col" className="px-6 py-3">
+                                Edit
+                            </th>
+                            <th scope="col" className="px-6 py-3">
                                 Details
                             </th>
                         </tr>
@@ -57,6 +61,9 @@ const Pending = () => {
                             </td>
                             <td>
                                 {order?.total}
+                            </td>
+                            <td>
+                                <Edit   order={order} setOrder={setOrder}></Edit>
                             </td>
                             <td className="">
                                 <Details order={order} setOrder={setOrder}></Details>

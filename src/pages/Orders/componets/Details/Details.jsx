@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BACKEND_URL } from '../../../../App';
 import { toggleGlobalLoading } from '../../../../components/Modal/components/GlobalLoading/GlobalLoading';
 import getMedia from '../../../../utilities/getMedia';
+import Swal from 'sweetalert2';
 
 const Details = ({ order, setOrder }) => {
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
@@ -50,6 +51,22 @@ const Details = ({ order, setOrder }) => {
             })
     }
 
+    const clickCancel = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, cancel it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                changeStatus(id, 'canceled')
+            }
+        });
+    }
+
 
     return (
         <div>
@@ -80,9 +97,9 @@ const Details = ({ order, setOrder }) => {
                             className=' mt-4 flex gap-2'
                             key={index}>
                             <p>{index + 1}.</p>
-                            <img 
-                             className='md:w-20 md:h-20 w-10 h-10 rounded object-cover'
-                            src={getMedia(product?.product?.media?.name)} alt="" />
+                            <img
+                                className='md:w-24 md:h-24  w-20 h-20 rounded object-cover'
+                                src={getMedia(product?.product?.media?.name)} alt="" />
                             <div>
                                 <p>Product Name: {product?.product.title}</p>
                                 <p>Product Price: {product?.product.price - product?.product.discount}</p>
@@ -110,7 +127,7 @@ const Details = ({ order, setOrder }) => {
                         {
                             status === 'pending' && <>
                                 <button
-                                    onClick={() => changeStatus(_id, 'canceled')}
+                                    onClick={() =>clickCancel(_id)}
                                     className="btn btn-error text-white">Cancel</button>
                                 <button
                                     onClick={() => accept(_id)}
@@ -120,7 +137,7 @@ const Details = ({ order, setOrder }) => {
                         {
                             status === 'accepted' && <>
                                 <button
-                                    onClick={() => changeStatus(_id, 'canceled')}
+                                    onClick={() =>clickCancel(_id)}
                                     className="btn btn-error text-white">Cancel</button>
                                 <button
                                     onClick={() => changeStatus(_id, 'shipped')}
