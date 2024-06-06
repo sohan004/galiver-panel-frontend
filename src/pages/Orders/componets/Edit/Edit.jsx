@@ -63,9 +63,9 @@ const Edit = ({ order, setOrder }) => {
         <div>
             <button
                 onClick={() => setShowModal(true)}
-                className="bg-red-500 text-white px-2 py-1 text-xs rounded-md ">Edit</button>
+                className="bg-yellow-500 text-white btn rounded-md ">Edit</button>
 
-            {showModal && <div className='bg-black fixed top-0 left-0 w-full h-full z-50 bg-opacity-30 flex items-center justify-center p-2'>
+            {showModal && <div className='bg-black backdrop-blur fixed top-0 left-0 w-full h-full z-50 bg-opacity-30 flex items-center justify-center p-2'>
                 <div className='p-4 bg-white max-w-[600px] w-full rounded-lg relative'>
 
                     <p
@@ -78,49 +78,49 @@ const Edit = ({ order, setOrder }) => {
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" />
 
                     <p className='mt-3'>Phone</p>
                     <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" />
 
                     <p className='mt-3'>Sub District</p>
                     <input
                         value={subDistrict}
                         onChange={(e) => setSubDistrict(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" />
 
                     <p className='mt-3'>District</p>
                     <input
                         value={district}
                         onChange={(e) => setDistrict(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" />
 
                     <p className='mt-3'>Address</p>
                     <input
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" />
 
                     {/* <p className='mt-3'>Total</p>
                     <input
                         value={total}
                         onChange={(e) => setTotal(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="text" name="" id="" /> */}
 
                     <p className='mt-3'>Delivery Charge</p>
                     <input
                         value={deliveryCharge}
                         onChange={(e) => setDeliveryCharge(e.target.value)}
-                        className='w-full border border-gray-300 outline-none rounded-md p-2 '
+                        className='w-full border bg-white border-gray-300 outline-none rounded-md p-2 '
                         type="number" name="" id="" />
 
                     <div className=' flex justify-center mt-4'>

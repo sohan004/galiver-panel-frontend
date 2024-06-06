@@ -4,6 +4,7 @@ import { BACKEND_URL } from '../../../../App';
 import { toggleGlobalLoading } from '../../../../components/Modal/components/GlobalLoading/GlobalLoading';
 import getMedia from '../../../../utilities/getMedia';
 import Swal from 'sweetalert2';
+import Edit from '../Edit/Edit';
 
 const Details = ({ order, setOrder }) => {
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
@@ -120,14 +121,15 @@ const Details = ({ order, setOrder }) => {
                         value={note}
                         placeholder='Write a note here...'
                         onChange={e => setNote(e.target.value)}
-                        className='w-full h-24 border border-gray-300 outline-none p-2 mt-3'
+                        className='w-full h-24 border bg-white border-gray-300 outline-none p-2 mt-3'
                     ></textarea>}
 
                     <div className='mt-3 flex justify-center items-center gap-4'>
                         {
                             status === 'pending' && <>
+                                <Edit order={order} setOrder={setOrder}></Edit>
                                 <button
-                                    onClick={() =>clickCancel(_id)}
+                                    onClick={() => clickCancel(_id)}
                                     className="btn btn-error text-white">Cancel</button>
                                 <button
                                     onClick={() => accept(_id)}
@@ -137,7 +139,7 @@ const Details = ({ order, setOrder }) => {
                         {
                             status === 'accepted' && <>
                                 <button
-                                    onClick={() =>clickCancel(_id)}
+                                    onClick={() => clickCancel(_id)}
                                     className="btn btn-error text-white">Cancel</button>
                                 <button
                                     onClick={() => changeStatus(_id, 'shipped')}

@@ -44,9 +44,6 @@ const Pending = () => {
                                 Price
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Edit
-                            </th>
-                            <th scope="col" className="px-6 py-3">
                                 Details
                             </th>
                         </tr>
@@ -61,9 +58,6 @@ const Pending = () => {
                             </td>
                             <td>
                                 {order?.total}
-                            </td>
-                            <td>
-                                <Edit   order={order} setOrder={setOrder}></Edit>
                             </td>
                             <td className="">
                                 <Details order={order} setOrder={setOrder}></Details>
