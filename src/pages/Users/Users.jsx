@@ -87,9 +87,6 @@ const Users = () => {
                                     <td className="px-6 py-4">
                                         <p className={user.role === 'admin' ? 'text-orange-600' : ''}>{user.role}</p>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <button className="bg-red-500 text-white px-2 py-1 rounded-md">Remove</button>
-                                    </td>
                                 </tr>)}
                         </tbody>
                     </table>
