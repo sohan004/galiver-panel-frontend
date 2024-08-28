@@ -83,7 +83,7 @@ const CreateLandingPage = () => {
                         id="headline"
                         value={headline}
                         onChange={(e) => setHeadline(e.target.value)}
-                        className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
@@ -97,7 +97,7 @@ const CreateLandingPage = () => {
                             id="title1"
                             value={title1}
                             onChange={(e) => setTitle1(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="mb-4">
@@ -109,7 +109,7 @@ const CreateLandingPage = () => {
                             id="title2"
                             value={title2}
                             onChange={(e) => setTitle2(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -123,7 +123,7 @@ const CreateLandingPage = () => {
                             id="description1"
                             value={description1}
                             onChange={(e) => setDescription1(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="mb-4">
@@ -134,7 +134,7 @@ const CreateLandingPage = () => {
                             id="description2"
                             value={description2}
                             onChange={(e) => setDescription2(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -148,7 +148,7 @@ const CreateLandingPage = () => {
                             type="file"
                             id="img1"
                             onChange={(e) => handleImageUpload(e, setImg1)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         {img1 && <img src={URL.createObjectURL(img1)} alt="Preview 1" className="mt-4 h-40 w-full object-cover" />}
                     </div>
@@ -160,7 +160,7 @@ const CreateLandingPage = () => {
                             type="file"
                             id="img2"
                             onChange={(e) => handleImageUpload(e, setImg2)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         {img2 && <img src={URL.createObjectURL(img2)} alt="Preview 2" className="mt-4 h-40 w-full object-cover" />}
                     </div>
@@ -172,7 +172,7 @@ const CreateLandingPage = () => {
                             type="file"
                             id="img3"
                             onChange={(e) => handleImageUpload(e, setImg3)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 bg-white border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         {img3 && <img src={URL.createObjectURL(img3)} alt="Preview 3" className="mt-4 h-40 w-full object-cover" />}
                     </div>
