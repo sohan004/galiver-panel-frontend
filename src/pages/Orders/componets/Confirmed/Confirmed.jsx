@@ -7,6 +7,7 @@ import CourierStatus from "../CourierStatus/CourierStatus";
 const Confirmed = () => {
     const [orders, setOrder] = useState([])
     const [loading, setLoading] = useState(false)
+    const [loadMore, setLoadMore] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -18,11 +19,30 @@ const Confirmed = () => {
             .then(response => response.json())
             .then(data => {
                 setOrder(data)
+                if (data.length === 10) {
+                    setLoadMore(true)
+                }
             })
             .finally(() => {
                 setLoading(false)
             })
     }, [])
+
+    const loadMoreData = () => {
+        fetch(`${BACKEND_URL}/api/v1/order?status=delivered&skip=${orders.length}`, {
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setOrder(prev => [...prev, ...data])
+                setLoading(false)
+                if (data.length < 10) {
+                    setLoadMore(false)
+                }
+            })
+    }
 
 
     return (
@@ -70,6 +90,9 @@ const Confirmed = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div className="flex justify-center">
+                {loadMore && <button onClick={loadMoreData} className="bg-blue-600 text-white px-2 py-1  rounded-md mt-2">Load More</button>}
             </div>
             {loading && <TableSkelaton />}
         </div>

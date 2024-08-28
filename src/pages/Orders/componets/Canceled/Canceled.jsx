@@ -8,6 +8,7 @@ import { toggleGlobalLoading } from "../../../../components/Modal/components/Glo
 const Canceled = () => {
     const [orders, setOrder] = useState([])
     const [loading, setLoading] = useState(false)
+    const [loadMore, setLoadMore] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -19,11 +20,30 @@ const Canceled = () => {
             .then(response => response.json())
             .then(data => {
                 setOrder(data)
+                if (data.length === 10) {
+                    setLoadMore(true)
+                }
             })
             .finally(() => {
                 setLoading(false)
             })
     }, [])
+
+    const loadMoreData = () => {
+        fetch(`${BACKEND_URL}/api/v1/order?status=canceled&skip=${orders.length}`, {
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setOrder(prev => [...prev, ...data])
+                setLoading(false)
+                if (data.length < 10) {
+                    setLoadMore(false)
+                }
+            })
+    }
 
     const changeStatus = (id, status) => {
         toggleGlobalLoading('open')
@@ -99,6 +119,9 @@ const Canceled = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div className="flex justify-center">
+                {loadMore && <button onClick={loadMoreData} className="bg-blue-600 text-white px-2 py-1  rounded-md mt-2">Load More</button>}
             </div>
             {loading && <TableSkelaton />}
         </div>

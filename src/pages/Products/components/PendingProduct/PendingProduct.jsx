@@ -7,6 +7,7 @@ import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 const PendingProduct = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [loadMore, setLoadMore] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -20,6 +21,9 @@ const PendingProduct = () => {
             .then(data => {
                 setData(data)
                 setLoading(false)
+                if (data.length === 10) {
+                    setLoadMore(true)
+                }
             })
     }, []);
 
@@ -52,6 +56,23 @@ const PendingProduct = () => {
             .then(data => {
                 setData(prev => prev.filter(product => product._id !== id))
                 toggleGlobalLoading('close')
+            })
+    }
+
+    const loadMoreData = () => {
+        fetch(`${BACKEND_URL}/api/v1/product/pending?skip=${data.length}`, {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')} `
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setData(prev => [...prev, ...data])
+                setLoading(false)
+                if (data.length < 10) {
+                    setLoadMore(false)
+                }
             })
     }
 
@@ -115,6 +136,9 @@ const PendingProduct = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div className="flex justify-center">
+                {loadMore && <button onClick={loadMoreData} className="bg-blue-600 text-white px-2 py-1  rounded-md mt-2">Load More</button>}
             </div>
             {loading && <TableSkelaton />}
         </div>

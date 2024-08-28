@@ -7,6 +7,7 @@ import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 const RejectedProduct = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
+    const [loadMore, setLoadMore] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -20,11 +21,28 @@ const RejectedProduct = () => {
             .then(data => {
                 setData(data)
                 setLoading(false)
+                if (data.length === 10) {
+                    setLoadMore(true)
+                }
             })
     }, []);
 
-    console.log(data)
-
+    const loadMoreData = () => {
+        fetch(`${BACKEND_URL}/api/v1/product/reject?skip=${data.length}`, {
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')} `
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setData(prev => [...prev, ...data])
+                setLoading(false)
+                if (data.length < 10) {
+                    setLoadMore(false)
+                }
+            })
+    }
 
     const approve = (id) => {
         toggleGlobalLoading('open')
@@ -92,6 +110,9 @@ const RejectedProduct = () => {
                         </tr>)}
                     </tbody>
                 </table>
+            </div>
+            <div className="flex justify-center">
+                {loadMore && <button onClick={loadMoreData} className="bg-blue-600 text-white px-2 py-1  rounded-md mt-2">Load More</button>}
             </div>
             {loading && <TableSkelaton />}
         </div>

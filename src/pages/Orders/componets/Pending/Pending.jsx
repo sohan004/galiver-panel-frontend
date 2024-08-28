@@ -6,8 +6,9 @@ import Details from "../Details/Details";
 import Edit from "../Edit/Edit";
 
 const Pending = () => {
-    const [orders, setOrder] = useState([])
+    const [order, setOrder] = useState([])
     const [loading, setLoading] = useState(false)
+    const [loadMore, setLoadMore] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -19,17 +20,36 @@ const Pending = () => {
             .then(response => response.json())
             .then(data => {
                 setOrder(data)
+                if (data.length === 10) {
+                    setLoadMore(true)
+                }
             })
             .finally(() => {
                 setLoading(false)
             })
     }, [])
 
-    console.log(orders);
+    const loadMoreData = () => {
+        fetch(`${BACKEND_URL}/api/v1/order?status=pending&skip=${order.length}`, {
+            headers: {
+                'authorization': `Bearer ${localStorage.getItem('admin-token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                setOrder(prev => [...prev, ...data])
+                setLoading(false)
+                if (data.length < 10) {
+                    setLoadMore(false)
+                }
+            })
+    }
+
+    console.log(order);
 
     return (
         <div>
-            <h1 className="mt-3">Total: {orders.length}</h1>
+            <h1 className="mt-3">Total: {order.length}</h1>
             <div className="overflow-x-auto mt-2">
                 <table className=" text-sm text-left  text-gray-500  w-full  bg-white shadow-md">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
@@ -49,7 +69,7 @@ const Pending = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order, index) => <tr className="bg-white border-b " key={order?._id}>
+                        {order.map((order, index) => <tr className="bg-white border-b " key={order?._id}>
                             <td  className="py-4">
                                 {index + 1}
                             </td>
@@ -66,6 +86,9 @@ const Pending = () => {
                     </tbody>
 
                 </table>
+            </div>
+            <div className="flex justify-center">
+                {loadMore && <button onClick={loadMoreData} className="bg-blue-600 text-white px-2 py-1  rounded-md mt-2">Load More</button>}
             </div>
             {loading && <TableSkelaton />}
         </div>

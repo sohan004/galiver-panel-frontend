@@ -4,7 +4,7 @@ import logo from '../../assets/logo/png-02.png'
 import { MdCategory, MdDashboard } from 'react-icons/md'
 import { FaAlignLeft, FaCarSide, FaSignOutAlt, FaUser, FaUserCircle } from "react-icons/fa";
 import { IoAddCircleSharp, IoCartSharp, IoNotificationsSharp } from 'react-icons/io5'
-import { RiShoppingBag2Fill } from 'react-icons/ri'
+import { RiPagesFill, RiShoppingBag2Fill } from 'react-icons/ri'
 import { BiSolidShoppingBags } from 'react-icons/bi'
 import { PiSubtractSquareFill, PiSubtractFill } from 'react-icons/pi'
 import { useDispatch } from "react-redux";
@@ -27,6 +27,11 @@ const DashboardLayout = () => {
             name: 'Orders',
             icon: IoCartSharp,
             path: '/orders'
+        },
+        {
+            name: 'Lading Page',
+            icon: RiPagesFill,
+            path: '/landing-page'
         },
         {
             name: 'All Products',
