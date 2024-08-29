@@ -8,10 +8,11 @@ const Returned = () => {
     const [orders, setOrder] = useState([])
     const [loading, setLoading] = useState(false)
     const [loadMore, setLoadMore] = useState(false)
+    const [phone, setPhone] = useState('')
 
     useEffect(() => {
         setLoading(true)
-        fetch(`${BACKEND_URL}/api/v1/order?status=returned`, {
+        fetch(`${BACKEND_URL}/api/v1/order?status=returned&phone=${phone}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
             }
@@ -26,10 +27,10 @@ const Returned = () => {
             .finally(() => {
                 setLoading(false)
             })
-    }, [])
+    }, [phone])
 
     const loadMoreData = () => {
-        fetch(`${BACKEND_URL}/api/v1/order?status=returned&skip=${orders.length}`, {
+        fetch(`${BACKEND_URL}/api/v1/order?status=returned&skip=${orders.length}&phone=${phone}`, {
             headers: {
                 'authorization': `Bearer ${localStorage.getItem('admin-token')}`
             }
@@ -47,7 +48,15 @@ const Returned = () => {
 
     return (
         <div>
-            <h1 className="mt-3">Total: {orders.length}</h1>
+            <div className="flex justify-between my-4">
+                <h1 className="mt-3">Total: {orders.length}</h1>
+                <input
+                    onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    className="p-2  outline-none border-b-2 border-gray-500"
+                    placeholder="search phone number"
+                    type="text" name="" id="" />
+            </div>
             <div className="overflow-x-auto mt-2">
                 <table className=" text-sm text-left  text-gray-500  w-full  bg-white shadow-md">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
