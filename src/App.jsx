@@ -27,6 +27,7 @@ import Canceled from "./pages/Orders/componets/Canceled/Canceled";
 import Confirmed from "./pages/Orders/componets/Confirmed/Confirmed";
 import LadingPage from "./pages/LadingPage/LadingPage";
 import CreateLandingPage from "./pages/CreateLandingPage/CreateLandingPage";
+import Summery from "./pages/Summery/Summery";
 
 // export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
 export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://www.api.galiver.shop'
@@ -60,6 +61,10 @@ const App = () => {
         {
           path: "/create-landing-page",
           element: <CreateLandingPage />
+        },
+        {
+          path: "/summary",
+          element: <Summery></Summery>
         },
         {
           path: "/products",

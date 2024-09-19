@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import logo from '../../assets/logo/png-02.png'
 import { MdCategory, MdDashboard } from 'react-icons/md'
-import { FaAlignLeft, FaCarSide, FaSignOutAlt, FaUser, FaUserCircle } from "react-icons/fa";
+import { FaAlignLeft, FaCarSide, FaMoneyBill, FaSignOutAlt, FaUser, FaUserCircle } from "react-icons/fa";
 import { IoAddCircleSharp, IoCartSharp, IoNotificationsSharp } from 'react-icons/io5'
 import { RiPagesFill, RiShoppingBag2Fill } from 'react-icons/ri'
 import { BiSolidShoppingBags } from 'react-icons/bi'
@@ -72,6 +72,11 @@ const DashboardLayout = () => {
             name: 'Courier',
             icon: FaCarSide,
             path: '/courier'
+        },
+        {
+            name: 'Summary',
+            icon: FaMoneyBill,
+            path: '/summary'
         },
     ]
 

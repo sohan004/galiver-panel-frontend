@@ -331,6 +331,17 @@ const AddProduct = () => {
                             placeholder="Enter product price (BDT)"
                             className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
                     </div>
+                    <div className="mt-6 md:mt-7">
+                        <p className="text-xs lg:text-sm text-gray-600 mb-2">Product Costing*</p>
+                        <input
+                            min={1}
+                            name="costing"
+                            onChange={onInputChange}
+                            value={getValue('costing', 'number')}
+                            type="number"
+                            placeholder="Enter product costing (BDT)"
+                            className="w-full p-2 px-2 rounded-md bg-slate-100 outline-none border border-gray-500 max-w-[250px]" />
+                    </div>
                     <div>
                         <p className="text-xs lg:text-sm text-gray-600 mb-2">Discount</p>
                         <input
