@@ -28,12 +28,12 @@ const Summery = () => {
                 <div className='grid gap-1'>
                     <label htmlFor="date1">From</label>
                     <input type="date" id="date1" value={date1} onChange={(e) => setDate1(e.target.value)}
-                        className='border w-full border-gray-300 rounded-md p-1' />
+                        className='border w-full bg-white border-gray-300 rounded-md p-1' />
                 </div>
                 <div className='grid gap-1'>
                     <label htmlFor="date2">To</label>
                     <input type="date" id="date2" value={date2} onChange={(e) => setDate2(e.target.value)}
-                        className='border w-full border-gray-300 rounded-md p-1' />
+                        className='border w-full bg-white border-gray-300 rounded-md p-1' />
                 </div>
             </div>
             <div className='flex justify-center mt-3'>
