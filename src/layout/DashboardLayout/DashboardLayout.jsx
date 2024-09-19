@@ -93,7 +93,7 @@ const DashboardLayout = () => {
 
                 <div onClick={() => setShowLeftSideBar(prev => !prev)} className={`fixed top-0 block md:hidden left-0 w-full h-full bg-black opacity-50 z-[50] backdrop-blur-md ${showLeftSideBar ? 'hidden' : 'block'}`}></div>
 
-                <div id="sidebar" className={`h-screen bg-[#1C2434] fixed md:sticky top-0 duration-500 w-[280px] overflow-y-auto  overflow-hidden  z-50 md:z-10 ${showLeftSideBar ? 'md:ml-0 -ml-[280px]' : 'ml-[0] md:-ml-[280px]'}  p-5 md:p-4`}>
+                <div id="sidebar" className={`h-screen bg-[#1C2434] fixed md:sticky top-0 duration-500 w-[280px] overflow-y-auto  pb-40  z-50 md:z-10 ${showLeftSideBar ? 'md:ml-0 -ml-[280px]' : 'ml-[0] md:-ml-[280px]'}  p-5 md:p-4`}>
                     <div className="">
                         <p className="flex items-center text-2xl font-semibold text-white"> <img src={logo} className="w-16 " alt="" /> Galiver</p>
                     </div>
