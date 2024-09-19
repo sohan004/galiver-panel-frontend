@@ -55,7 +55,7 @@ const Pending = () => {
                 <input
                     onChange={(e) => setPhone(e.target.value)}
                     value={phone}
-                    className="p-2  outline-none border-b-2 border-gray-500"
+                    className="p-2  outline-none border-b-2 border-gray-500 bg-white"
                     placeholder="search phone number"
                     type="text" name="" id="" />
             </div>
