@@ -30,7 +30,7 @@ import CreateLandingPage from "./pages/CreateLandingPage/CreateLandingPage";
 import Summery from "./pages/Summery/Summery";
 
 // export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://galiver-backend.onrender.com'
-export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'http://localhost:3013' : 'https://www.api.galiver.shop'
+export const BACKEND_URL = import.meta.env.MODE === 'development' ? 'https://www.api.galiver.shop' : 'https://www.api.galiver.shop'
 
 
 const App = () => {
