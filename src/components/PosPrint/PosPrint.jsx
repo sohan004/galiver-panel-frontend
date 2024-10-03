@@ -1,26 +1,31 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import logo from '../../assets/logo/png-02.png'
+import logo from '../../assets/logo/png-04.png'
 import { IoMdPrint } from 'react-icons/io';
 import useFormattedDateTime from '../../Hooks/useFormatDateTime';
+import QRCode from 'react-qr-code';
 
-const PosPrint = ({ order, children }) => {
-
-    const ref = useRef(null)
+const PosPrint = forwardRef(({ order }, ref) => {
+    const contentRef = useRef()
     const { formattedDate, formattedTime } = useFormattedDateTime(new Date().toISOString());
 
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
 
     const handlePrint = useReactToPrint({
-        contentRef: ref,
+        content: () => contentRef.current,
         pageStyle: `@media print {
             @page {
-              size: $58mm ${ref.current?.clientHeight + 20}px;
+              size: 58mm ${contentRef.current?.clientHeight + 20}px;
               margin: 0;
             }
           }`
     });
+
+
+    useImperativeHandle(ref, () => ({
+        print: handlePrint
+    }));
 
 
 
@@ -28,17 +33,15 @@ const PosPrint = ({ order, children }) => {
         <div>
             <div
                 className='cursor-pointer'
-                onClick={() => handlePrint()}>
-                <p>print</p>
+                onClick={handlePrint}>
             </div>
             <div
                 className='w-0 h-0 overflow-hidden'>
-                <div ref={ref} className={` p-2 font-mono mx-auto  bg-white text-black overflow-hidden`}>
+                <div ref={contentRef} className={` p-2 mx-auto text-black`}>
                     <div className=" text-xs ">
                         <div className="text-center mb-4">
-                            <img src={logo} className="mx-auto  w-12" />
-                            <h1 className="font-bold text-lg">Galiver</h1>
-                            <p className="text-xs">{formattedDate} | {formattedTime}</p>
+                            <img src={logo} className="mx-auto  w-24" />
+                            <p className="text-xs mt-1">{formattedDate} | {formattedTime}</p>
                             <p className="text-xs mt-1 font-bold">#{_id}</p>
                         </div>
 
@@ -57,8 +60,8 @@ const PosPrint = ({ order, children }) => {
                                 <span>{phone}</span>
                             </div>
                             <div className="flex justify-between gap-2">
-                                <span className="font-bold">Address:</span>
-                                <span>{`${address}, ${subDistrict}, ${district}`}</span>
+                                <span className="font-bold ">Address:</span>
+                                <span className='text-right'>{`${address}, ${subDistrict}, ${district}`}</span>
                             </div>
                         </div>
 
@@ -110,13 +113,13 @@ const PosPrint = ({ order, children }) => {
                         {/* Footer */}
                         <div className="text-center mt-4">
                             <p className="text-xs">Thank you for shopping with Galiver!</p>
-                            <p className="text-xs">Visit us: <a href="https://www.galiver.shop" className="font-bold underline">galiver.shop</a></p>
+                            <p className="text-xs">Visit us: <a href="https://www.galiver.shop" className="font-bold">www.galiver.shop</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 export default PosPrint;

@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { BACKEND_URL } from '../../../../App';
 import { toggleGlobalLoading } from '../../../../components/Modal/components/GlobalLoading/GlobalLoading';
 import getMedia from '../../../../utilities/getMedia';
 import Swal from 'sweetalert2';
 import Edit from '../Edit/Edit';
 import PosPrint from '../../../../components/PosPrint/PosPrint';
+import { useReactToPrint } from 'react-to-print';
+import { IoPrintOutline } from 'react-icons/io5';
 
 const Details = ({ order, setOrder }) => {
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
     const [showModal, setShowModal] = useState(false)
     const [note, setNote] = useState('')
+    const printRef = useRef()
+
 
     const accept = (id) => {
         toggleGlobalLoading('open')
@@ -82,9 +86,15 @@ const Details = ({ order, setOrder }) => {
                     <p
                         onClick={() => setShowModal(false)}
                         className="absolute top-3 right-3 cursor-pointer"> &#10006;</p>
-
                     <h3 className='border-b border-gray-300 pb-3 text-center font-bold md:text-lg v'>Order Id: {_id}</h3>
                     <div className='mt-3 border-b border-gray-300 pb-3'>
+                        <IoPrintOutline
+                            onClick={() => {
+                                if (printRef.current) {
+                                    printRef.current.print()
+                                }
+                            }}
+                            className='text-2xl text-black mb-2 cursor-pointer' />
                         <p className='text-gray-800 text-lg md:text-xl font-medium'>Consignment id : <span>{consignment_id}</span></p>
                         <p className='text-gray-800 md:text-lg font-medium'>Name : <span>{name}</span></p>
                         <p className='text-gray-800 md:text-lg font-medium'>Phone : <span>{phone}</span></p>
@@ -143,7 +153,12 @@ const Details = ({ order, setOrder }) => {
                                     onClick={() => clickCancel(_id)}
                                     className="btn btn-error text-white">Cancel</button>
                                 <button
-                                    onClick={() => changeStatus(_id, 'shipped')}
+                                    onClick={() => {
+                                        if (printRef.current) {
+                                            printRef.current.print()
+                                        }
+                                        changeStatus(_id, 'shipped')
+                                    }}
                                     className="btn btn-success text-white">Go to ship</button>
                             </>
                         }
@@ -157,9 +172,7 @@ const Details = ({ order, setOrder }) => {
                                     className="btn btn-success text-white">Delivered</button>
                             </>
                         }
-                        <PosPrint order={order}>
-                          
-                        </PosPrint>
+                        <PosPrint order={order} ref={printRef} />
                     </div>
 
                 </div>

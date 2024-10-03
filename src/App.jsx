@@ -151,7 +151,7 @@ const App = () => {
   ])
 
   return (
-    <div className="bg-white text-black">
+    <div className="bg-white text-black h-screen overflow-y-auto">
       <RouterProvider router={router} ></RouterProvider>
 
       <Modal />
