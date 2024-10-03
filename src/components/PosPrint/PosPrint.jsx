@@ -33,7 +33,7 @@ const PosPrint = ({ order, children }) => {
             </div>
             <div
                 className='w-0 h-0 overflow-hidden'>
-                <div ref={ref} className={`w-[58mm] p-2 font-mono mx-auto  bg-white text-black overflow-hidden`}>
+                <div ref={ref} className={` p-2 font-mono mx-auto  bg-white text-black overflow-hidden`}>
                     <div className=" text-xs ">
                         <div className="text-center mb-4">
                             <img src={logo} className="mx-auto  w-12" />
