@@ -13,7 +13,7 @@ const PosPrint = ({ order, children }) => {
     const { _id, name, phone, subDistrict, district, address, total, orderProduct, status, deliveryCharge, consignment_id } = order
 
     const handlePrint = useReactToPrint({
-        content: () => ref.current,
+        contentRef: ref,
         pageStyle: `@media print {
             @page {
               size: $58mm ${ref.current?.clientHeight + 20}px;
