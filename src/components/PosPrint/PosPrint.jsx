@@ -78,7 +78,7 @@ const PosPrint = forwardRef(({ order }, ref) => {
                                 {orderProduct.map((item, index) => (
                                     <tr key={index} className="border-b border-dashed border-gray-400">
                                         <td>
-                                            <p>{item?.title}</p>
+                                            <p>{item?.product?.title}</p>
                                             {item?.color && (item?.color !== "N/A") && <p>Color : {item?.color}</p>}
                                             {item?.size && (item?.size !== "N/A") && <p>Size : {item?.size}</p>}
                                             {item?.height && (item?.height !== "N/A") && <p>Height : {item?.height}</p>}
