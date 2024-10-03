@@ -78,13 +78,13 @@ const PosPrint = forwardRef(({ order }, ref) => {
                                 {orderProduct.map((item, index) => (
                                     <tr key={index} className="border-b border-dashed border-gray-400">
                                         <td>
-                                            <p>{item.product.title}</p>
-                                            {item?.product?.color && (item?.product?.color !== "N/A") && <p>Color : {item?.product?.color}</p>}
-                                            {item?.product?.size && (item?.product?.size !== "N/A") && <p>Size : {item?.product?.size}</p>}
-                                            {item?.product?.height && (item?.product?.height !== "N/A") && <p>Height : {item?.product?.height}</p>}
-                                            {item?.product?.width && (item?.product?.width !== "N/A") && <p>Width : {item?.product?.width}</p>}
-                                            {item?.product?.material && (item?.product?.material !== "N/A") && <p>Material : {item?.product?.material}</p>}
-                                            {item?.product?.variant && (item?.product?.variant !== "N/A") && <p>Variant : {item?.product?.variant}</p>}
+                                            <p>{item?.title}</p>
+                                            {item?.color && (item?.color !== "N/A") && <p>Color : {item?.color}</p>}
+                                            {item?.size && (item?.size !== "N/A") && <p>Size : {item?.size}</p>}
+                                            {item?.height && (item?.height !== "N/A") && <p>Height : {item?.height}</p>}
+                                            {item?.width && (item?.width !== "N/A") && <p>Width : {item?.width}</p>}
+                                            {item?.material && (item?.material !== "N/A") && <p>Material : {item?.material}</p>}
+                                            {item?.variant && (item?.variant !== "N/A") && <p>Variant : {item?.variant}</p>}
                                         </td>
                                         <td className="text-right">{item.quantity}x</td>
                                         <td className="text-right"> {(item?.quantity * (item?.product.price - item?.product.discount))}</td>
