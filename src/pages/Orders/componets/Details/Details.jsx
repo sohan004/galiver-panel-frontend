@@ -12,8 +12,6 @@ const Details = ({ order, setOrder }) => {
     const [showModal, setShowModal] = useState(false)
     const [note, setNote] = useState('')
 
-    console.log(order);
-
     const accept = (id) => {
         toggleGlobalLoading('open')
         fetch(`${BACKEND_URL}/api/v1/order/accept`, {
@@ -160,8 +158,7 @@ const Details = ({ order, setOrder }) => {
                             </>
                         }
                         <PosPrint order={order}>
-                            <button
-                                className="btn btn-warning text-white">Print</button>
+                          
                         </PosPrint>
                     </div>
 

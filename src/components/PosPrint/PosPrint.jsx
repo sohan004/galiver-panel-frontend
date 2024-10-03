@@ -28,8 +28,8 @@ const PosPrint = ({ order, children }) => {
         <div>
             <div
                 className='cursor-pointer'
-                onClick={handlePrint}>
-                {children}
+                onClick={() => handlePrint()}>
+                <p>print</p>
             </div>
             <div
                 className='w-0 h-0 overflow-hidden'>

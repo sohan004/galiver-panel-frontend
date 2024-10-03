@@ -3,7 +3,6 @@ import { BACKEND_URL } from "../../../../App";
 import Details from "../Details/Details";
 import TableSkelaton from "../../../../components/TableSkelaton/TableSkelaton";
 import CourierStatus from "../CourierStatus/CourierStatus";
-import PosPrint from "../../../../components/PosPrint/PosPrint";
 
 const Accepted = () => {
     const [orders, setOrder] = useState([])
@@ -21,7 +20,7 @@ const Accepted = () => {
             .then(response => response.json())
             .then(data => {
                 setOrder(data)
-                if (data.length === 10) {
+                 if (data.length === 10) {
                     setLoadMore(true)
                 }
             })
@@ -49,7 +48,7 @@ const Accepted = () => {
 
     return (
         <div>
-            <div className="flex justify-between my-4">
+           <div className="flex justify-between my-4">
                 <h1 className="mt-3">Total: {orders.length}</h1>
                 <input
                     onChange={(e) => setPhone(e.target.value)}
@@ -81,7 +80,7 @@ const Accepted = () => {
                     </thead>
                     <tbody>
                         {orders.map((order, index) => <tr className="bg-white border-b " key={order?._id}>
-                            <td className="py-4">
+                            <td  className="py-4">
                                 {index + 1}
                             </td>
                             <td >
@@ -91,16 +90,10 @@ const Accepted = () => {
                                 {order?.total}
                             </td>
                             <td>
-                                <CourierStatus trackId={order?.tracking_id}></CourierStatus>
+                            <CourierStatus trackId={order?.tracking_id}></CourierStatus>
                             </td>
                             <td className="">
                                 <Details order={order} setOrder={setOrder}></Details>
-                            </td>
-                            <td>
-                                <PosPrint order={order}>
-                                    <button
-                                        className="btn btn-warning text-white">Print</button>
-                                </PosPrint>
                             </td>
                         </tr>)}
                     </tbody>
