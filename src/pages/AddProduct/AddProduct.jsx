@@ -65,9 +65,6 @@ const AddProduct = () => {
         let fileArray = []
         await Promise.all(Object.keys(file).map((key) => {
             const singleFile = file[key]
-            if (singleFile.size > 500000) {
-                return toast.error('Image size must be less then 500kb')
-            }
             if (singleFile.type.includes('image')) {
                 fileArray.push(singleFile)
             }
@@ -278,9 +275,6 @@ const AddProduct = () => {
             <div className="flex flex-col lg:flex-row w-full gap-5 lg:gap-3">
                 <div className="w-full lg:w-[50%] p-3 rounded-md lg:p-4 bg-white flex flex-col gap-4 md:gap-6">
                     {!productData && <div>
-                        <p className="text-xs lg:text-sm text-gray-600 mb-2">
-                            <FaInfoCircle className="inline me-1 -mt-1" />
-                            Add product image. Must be add clear,  white background image . image size must be less then 500kb*</p>
                         <div className="flex gap-6 lg:gap-10 mt-3 flex-wrap">
                             {getValue('media', 'array')?.map((img, index) => <div className="h-[90px] w-[90px] lg:h-[130px] lg:w-[130px] relative " key={index}>
                                 <p onClick={() => removeArrayValue('media', index)} className="absolute top-0 right-0 rounded-full cursor-pointer bg-slate-600 text-white"><IoIosClose /></p>
